@@ -1,0 +1,41 @@
+.page-container {
+    position: relative; /* Necesario para que el pseudo-elemento se posicione relativo a este contenedor */
+    overflow: hidden; /* Asegura que el pseudo-elemento no se desborde del contenedor */
+}
+
+.page-container::before {
+    content: ""; /* Necesario para que el pseudo-elemento se muestre */
+    position: absolute; /* Coloca el pseudo-elemento sobre el contenido */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* background: url("./../images/resources/BACKGROUND-0.jpg") no-repeat center center;  */
+    background-size: cover;
+    opacity: .5; /* Ajusta la opacidad de la imagen de fondo */
+    pointer-events: none; /* Asegura que el pseudo-elemento no interfiera con las interacciones del usuario */
+    z-index: 0; /* Coloca el pseudo-elemento por debajo del contenido */
+}
+.card-main-body{
+    opacity: .8!important; /* Ajusta la opacidad de la imagen de fondo */
+
+}
+.page-container > * {
+    position: relative; /* Asegura que los elementos hijos estén por encima del pseudo-elemento */
+    z-index: 1; /* Asegura que los elementos hijos estén por encima del pseudo-elemento */
+}
+
+/* Definición de clases para los diferentes fondos */
+.page-container.bg-0::before {
+    background: url("./../images/resources/BACKGROUND-0.jpg") no-repeat center center;
+}
+
+.page-container.bg-1::before {
+    background: url("./../images/resources/BACKGROUND-1.jpg") no-repeat center center;
+}
+
+.page-container.bg-2::before {
+    background: url("./../images/resources/BACKGROUND-2.jpg") no-repeat center center;
+}
+
+/* Aquí puedes añadir más clases si tienes más fondos */
