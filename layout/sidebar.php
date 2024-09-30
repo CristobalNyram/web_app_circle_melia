@@ -22,6 +22,9 @@
                     <li class="">
                         <a href="no-brainer">No brainer</a>
                     </li>
+                    <li class="">
+                        <a href="locations">Nuestras ubicaciones</a>
+                    </li>
                 </ul>
             </li>
         </ul>

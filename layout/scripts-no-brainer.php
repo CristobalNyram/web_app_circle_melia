@@ -12,7 +12,7 @@
 <!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> -->
 <!-- Incluir jQuery y Fancybox -->
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-<link rel="stylesheet" href="https://cdn.jsdelfivr.net/npm/@fancyapps/ui@4.0.27/dist/fancybox.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0.27/dist/fancybox.css"/>
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0.27/dist/fancybox.umd.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
