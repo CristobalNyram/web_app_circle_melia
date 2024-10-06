@@ -142,8 +142,8 @@
                             <h6 id="vacation-result"></h6>
                         </div>
 
-                        <div class="row text-center mt-4">
-                            <div class="col-md-3">
+                        <div class="row text-center mt-3">
+                            <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-body">
                                       <i class="anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
@@ -153,7 +153,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-body">
                                         <i class="anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
@@ -162,7 +162,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-body">
                                         <i class="anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
@@ -171,7 +171,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-body">
                                         <i class="anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
@@ -180,7 +180,16 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <i class="anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
+                                            <h5 class="card-title" id="vacation-result-total30"></h5>
+                                            <p class="card-text">Total por 30 años</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         <div class="table-responsive mt-4">
                         <table class="table table-striped table-bordered" id="vacation-summary-table">

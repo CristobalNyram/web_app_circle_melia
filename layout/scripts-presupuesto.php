@@ -43,123 +43,123 @@ const countries = {
     }
 };
 
-window.onload = function () {
-    const selectElement = document.getElementById("vacation-country-select");
+    window.onload = function () {
+        const selectElement = document.getElementById("vacation-country-select");
 
-    // Crear una lista para simular el select
-    const ul = document.createElement("ul");
-    ul.classList.add("country-list");
+        // Crear una lista para simular el select
+        const ul = document.createElement("ul");
+        ul.classList.add("country-list");
 
-    // Crear el input de búsqueda como la primera opción
-    const searchInputLi = document.createElement("li");
-    const searchInput = document.createElement("input");
-    searchInput.type = "text";
-    searchInput.placeholder = "Buscar país...";
-    searchInput.classList.add("country-search");
+        // Crear el input de búsqueda como la primera opción
+        const searchInputLi = document.createElement("li");
+        const searchInput = document.createElement("input");
+        searchInput.type = "text";
+        searchInput.placeholder = "Buscar país...";
+        searchInput.classList.add("country-search");
 
-    // Agregar el input de búsqueda al elemento de la lista
-    searchInputLi.appendChild(searchInput);
-    ul.appendChild(searchInputLi);
+        // Agregar el input de búsqueda al elemento de la lista
+        searchInputLi.appendChild(searchInput);
+        ul.appendChild(searchInputLi);
 
-    // Agregar países a la lista
-    for (let country in countries) {
-        const li = document.createElement("li");
+        // Agregar países a la lista
+        for (let country in countries) {
+            const li = document.createElement("li");
 
-        // Crear la imagen de la bandera
-        const img = document.createElement("img");
-        img.src = countries[country].flag;
-        img.alt = `${country} flag`;
-        img.classList.add("flag");
+            // Crear la imagen de la bandera
+            const img = document.createElement("img");
+            img.src = countries[country].flag;
+            img.alt = `${country} flag`;
+            img.classList.add("flag");
 
-        // Crear el texto del país
-        const span = document.createElement("span");
-        span.textContent = country;
+            // Crear el texto del país
+            const span = document.createElement("span");
+            span.textContent = country;
 
-        // Agregar imagen y texto al elemento de la lista
-        li.appendChild(img);
-        li.appendChild(span);
+            // Agregar imagen y texto al elemento de la lista
+            li.appendChild(img);
+            li.appendChild(span);
 
-        // Agregar evento de selección
-        li.addEventListener("click", function (event) {
-            event.stopPropagation();
-            // Actualizar el país y bandera seleccionados
-            selectElement.querySelector("span.selected-country").textContent = country;
-            selectElement.querySelector("img.selected-flag").src = countries[country].flag;
+            // Agregar evento de selección
+            li.addEventListener("click", function (event) {
+                event.stopPropagation();
+                // Actualizar el país y bandera seleccionados
+                selectElement.querySelector("span.selected-country").textContent = country;
+                selectElement.querySelector("img.selected-flag").src = countries[country].flag;
 
-            // Actualizar la variable global con el país seleccionado
-            selectedCountryName = country;
+                // Actualizar la variable global con el país seleccionado
+                selectedCountryName = country;
 
-            // Ocultar la lista después de la selección
-            ul.style.display = "none";
-            searchInput.value = ""; // Limpiar el campo de búsqueda al seleccionar un país
+                // Ocultar la lista después de la selección
+                ul.style.display = "none";
+                searchInput.value = ""; // Limpiar el campo de búsqueda al seleccionar un país
+            });
+
+            // Agregar el elemento de la lista al contenedor
+            ul.appendChild(li);
+        }
+
+        // Crear la bandera y nombre seleccionado por defecto
+        const selectedFlag = document.createElement("img");
+        selectedFlag.classList.add("selected-flag");
+        selectedFlag.src = countries["México"].flag; // Mostrar la bandera de México por defecto
+
+        const selectedCountry = document.createElement("span");
+        selectedCountry.classList.add("selected-country");
+        selectedCountry.textContent = "México"; // Mostrar México por defecto
+
+        // Agregar los elementos seleccionados al contenedor
+        selectElement.appendChild(selectedFlag);
+        selectElement.appendChild(selectedCountry);
+        selectElement.appendChild(ul);
+
+        // Evento para mostrar/ocultar la lista al hacer clic en el select
+        selectElement.addEventListener("click", function (event) {
+            ul.style.display = ul.style.display === "block" ? "none" : "block";
         });
 
-        // Agregar el elemento de la lista al contenedor
-        ul.appendChild(li);
-    }
+        // Evento de búsqueda
+        searchInput.addEventListener("input", function () {
+            const filter = searchInput.value.toLowerCase();
+            const liElements = ul.querySelectorAll("li:not(:first-child)"); // Excluir el input de búsqueda
+            liElements.forEach(li => {
+                const countryName = li.textContent.toLowerCase();
+                if (countryName.includes(filter)) {
+                    li.style.display = "";
+                } else {
+                    li.style.display = "none";
+                }
+            });
+        });
 
-    // Crear la bandera y nombre seleccionado por defecto
-    const selectedFlag = document.createElement("img");
-    selectedFlag.classList.add("selected-flag");
-    selectedFlag.src = countries["México"].flag; // Mostrar la bandera de México por defecto
-
-    const selectedCountry = document.createElement("span");
-    selectedCountry.classList.add("selected-country");
-    selectedCountry.textContent = "México"; // Mostrar México por defecto
-
-    // Agregar los elementos seleccionados al contenedor
-    selectElement.appendChild(selectedFlag);
-    selectElement.appendChild(selectedCountry);
-    selectElement.appendChild(ul);
-
-    // Evento para mostrar/ocultar la lista al hacer clic en el select
-    selectElement.addEventListener("click", function (event) {
-        ul.style.display = ul.style.display === "block" ? "none" : "block";
-    });
-
-    // Evento de búsqueda
-    searchInput.addEventListener("input", function () {
-        const filter = searchInput.value.toLowerCase();
-        const liElements = ul.querySelectorAll("li:not(:first-child)"); // Excluir el input de búsqueda
-        liElements.forEach(li => {
-            const countryName = li.textContent.toLowerCase();
-            if (countryName.includes(filter)) {
-                li.style.display = "";
-            } else {
-                li.style.display = "none";
+        // Cerrar la lista cuando se hace clic fuera de ella
+        document.addEventListener("click", function (event) {
+            if (!selectElement.contains(event.target)) {
+                ul.style.display = "none";
+                searchInput.value = ""; // Limpiar el campo de búsqueda al cerrar
             }
         });
-    });
 
-    // Cerrar la lista cuando se hace clic fuera de ella
-    document.addEventListener("click", function (event) {
-        if (!selectElement.contains(event.target)) {
-            ul.style.display = "none";
-            searchInput.value = ""; // Limpiar el campo de búsqueda al cerrar
-        }
-    });
+        // Impedir el cierre de la lista al hacer clic en el input de búsqueda
+        searchInput.addEventListener("click", function (event) {
+            event.stopPropagation(); // Evitar que el clic se propague
+        });
+    };
 
-    // Impedir el cierre de la lista al hacer clic en el input de búsqueda
-    searchInput.addEventListener("click", function (event) {
-        event.stopPropagation(); // Evitar que el clic se propague
-    });
-};
-
-    // CONTRIES
+        // CONTRIES
     const inflationData = {
-    'México': [5.0, 4.8, 4.5, 4.3, 4.1, 4.0, 3.9, 3.8, 3.7, 3.6, 4.0, 4.1, 4.0, 4.2, 4.0, 4.1, 4.0, 4.1, 4.0, 4.2, 4.1, 4.0, 4.0, 4.1, 4.0, 4.2,4],
-    'Estados Unidos': [3.2, 2.9, 2.7, 2.5, 2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 2.5, 2.6, 2.5, 2.7, 2.5, 2.6, 2.5, 2.7, 2.6, 2.5, 2.6, 2.5, 2.4, 2.5, 2.4, 2.3,2.2],
-    'Canadá': [2.5, 2.3, 2.2, 2.1, 2.0, 1.9, 1.8, 1.7, 1.6, 1.5, 2.0, 2.1, 2.2, 2.1, 2.0, 2.1, 2.2, 2.0, 2.1, 2.0, 2.1, 2.0, 1.9, 2.0, 1.9, 2.0,2.2],
-    'España': [3.4, 3.2, 3.0, 2.8, 2.6, 2.5, 2.4, 2.3, 2.2, 2.1, 2.0, 2.1, 2.0, 2.2, 2.1, 2.0, 2.1, 2.2, 2.0, 2.1, 2.2, 2.1, 2.0, 2.1, 2.2, 2.3,2.2],
-    'Chile': [4.8, 4.5, 4.3, 4.0, 3.8, 3.6, 3.4, 3.3, 3.2, 3.0, 3.5, 3.6, 3.4, 3.5, 3.3, 3.5, 3.6, 3.4, 3.5, 3.4, 3.6, 3.5, 3.4, 3.5, 3.6, 3.7,3.5],
-    'Reino Unido': [3.1, 2.9, 2.7, 2.6, 2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 2.5, 2.6, 2.5, 2.6, 2.5, 2.7, 2.5, 2.6, 2.7, 2.5, 2.6, 2.5, 2.4, 2.5, 2.4, 2.5,2.3],
-    'Colombia': [5.5, 5.3, 5.0, 4.8, 4.7, 4.5, 4.4, 4.2, 4.1, 4.0, 4.5, 4.6, 4.5, 4.7, 4.6, 4.8, 4.7, 4.8, 4.6, 4.5, 4.7, 4.5, 4.4, 4.3, 4.5, 4.6,4.2],
-    'Argentina': [10.0, 9.5, 9.0, 8.5, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0, 4.5, 4.0, 4.5, 4.0, 4.5, 4.0, 4.5, 4.0, 4.5,4.3],
-    'Brasil': [6.0, 5.8, 5.5, 5.2, 5.0, 4.8, 4.6, 4.5, 4.3, 4.2, 5.0, 5.2, 5.1, 5.3, 5.2, 5.0, 4.9, 4.8, 4.7, 4.6, 4.5, 4.4, 4.3, 4.5, 4.6, 4.7,4.5],
-    'Portugal': [2.6, 2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 1.8, 1.7, 1.6, 2.0, 2.1, 2.2, 2.1, 2.0, 2.1, 2.2, 2.0, 2.1, 2.0, 2.1, 2.0, 2.1, 2.2, 2.3, 2.4,2.3],
-    'República Dominicana': [4.5, 4.3, 4.2, 4.1, 4.0, 3.9, 3.8, 3.7, 3.6, 3.5, 4.0, 4.1, 4.0, 4.2, 4.1, 4.0, 4.3, 4.2, 4.1, 4.0, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8,4.5],
-    'years': [2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040, 2041, 2042, 2043, 2044, 2045, 2046, 2047, 2048, 2049, 2050]
-};
+        "México": [5.0, 4.8, 4.5, 4.3, 4.1, 4.0, 3.9, 3.8, 3.7, 3.6, 4.0, 4.1, 4.0, 4.2, 4.0, 4.1, 4.0, 4.1, 4.0, 4.2, 4.1, 4.0, 4.0, 4.1, 4.0, 4.2, 4.0, 4.1, 4.0, 4.0, 4.1, 4.0],
+        "Estados Unidos": [3.2, 2.9, 2.7, 2.5, 2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 2.5, 2.6, 2.5, 2.7, 2.5, 2.6, 2.5, 2.7, 2.6, 2.5, 2.6, 2.5, 2.4, 2.5, 2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 1.8, 1.7],
+        "Canadá": [2.5, 2.3, 2.2, 2.1, 2.0, 1.9, 1.8, 1.7, 1.6, 1.5, 2.0, 2.1, 2.2, 2.1, 2.0, 2.1, 2.2, 2.0, 2.1, 2.0, 2.1, 2.0, 1.9, 2.0, 1.9, 2.0, 2.2, 2.1, 2.0, 1.9, 1.8, 1.7],
+        "España": [3.4, 3.2, 3.0, 2.8, 2.6, 2.5, 2.4, 2.3, 2.2, 2.1, 2.0, 2.1, 2.0, 2.2, 2.1, 2.0, 2.1, 2.2, 2.0, 2.1, 2.2, 2.1, 2.0, 2.1, 2.2, 2.3, 2.2, 2.1, 2.0, 2.0, 1.9, 1.8],
+        "Chile": [4.8, 4.5, 4.3, 4.0, 3.8, 3.6, 3.4, 3.3, 3.2, 3.0, 3.5, 3.6, 3.4, 3.5, 3.3, 3.5, 3.6, 3.4, 3.5, 3.4, 3.6, 3.5, 3.4, 3.5, 3.6, 3.7, 3.5, 3.4, 3.3, 3.2, 3.1, 3.0],
+        "Reino Unido": [3.1, 2.9, 2.7, 2.6, 2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 2.5, 2.6, 2.5, 2.6, 2.5, 2.7, 2.5, 2.6, 2.7, 2.5, 2.6, 2.5, 2.4, 2.5, 2.4, 2.5, 2.3, 2.2, 2.1, 2.0, 1.9, 1.8],
+        "Colombia": [5.5, 5.3, 5.0, 4.8, 4.7, 4.5, 4.4, 4.2, 4.1, 4.0, 4.5, 4.6, 4.5, 4.7, 4.6, 4.8, 4.7, 4.8, 4.6, 4.5, 4.7, 4.5, 4.4, 4.3, 4.5, 4.6, 4.2, 4.1, 4.0, 4.0, 3.9, 3.8],
+        "Argentina": [10.0, 9.5, 9.0, 8.5, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0, 4.5, 4.0, 4.5, 4.0, 4.5, 4.0, 4.5, 4.0, 4.5, 4.3, 4.2, 4.1, 4.0, 3.9, 3.8],
+        "Brasil": [6.0, 5.8, 5.5, 5.2, 5.0, 4.8, 4.6, 4.5, 4.3, 4.2, 5.0, 5.2, 5.1, 5.3, 5.2, 5.0, 4.9, 4.8, 4.7, 4.6, 4.5, 4.4, 4.3, 4.5, 4.6, 4.7, 4.5, 4.4, 4.3, 4.2, 4.1, 4.0],
+        "Portugal": [2.6, 2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 1.8, 1.7, 1.6, 2.0, 2.1, 2.2, 2.1, 2.0, 2.1, 2.2, 2.0, 2.1, 2.0, 2.1, 2.0, 2.1, 2.2, 2.3, 2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 1.8],
+        "República Dominicana": [4.5, 4.3, 4.2, 4.1, 4.0, 3.9, 3.8, 3.7, 3.6, 3.5, 4.0, 4.1, 4.0, 4.2, 4.1, 4.0, 4.3, 4.2, 4.1, 4.0, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.5, 4.4, 4.3, 4.2, 4.1, 4.0],
+        "years": [2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040, 2041, 2042, 2043, 2044, 2045, 2046, 2047, 2048, 2049, 2050, 2051, 2052, 2053, 2054, 2055]
+    };
 
 
     let vacationChart;
@@ -240,7 +240,7 @@ window.onload = function () {
     document.getElementById('vacation-result').innerHTML = '';
     document.getElementById('vacation-result-total5').innerHTML = '';
 
-    let cincoAnios = 0, diezAnios = 0, quinceAnios = 0, veinteAnios = 0;
+    let cincoAnios = 0, diezAnios = 0, quinceAnios = 0, veinteAnios = 0,treintaAnios = 0;
     let budgetResults = `
     <table class="table table-bordered table-striped">
         <tr class="bg-white">
@@ -270,8 +270,14 @@ window.onload = function () {
         }
         if (i - yearIndex < 15) {
             quinceAnios += adjustedBudget;
+        
         }
-        veinteAnios += adjustedBudget;
+        if (i - yearIndex < 20) {
+            veinteAnios += adjustedBudget;
+        }
+        if (i - yearIndex < 30) {
+            treintaAnios += adjustedBudget;
+        }
     }
 
     budgetResults += `</table>`;
@@ -284,16 +290,18 @@ window.onload = function () {
     document.getElementById('vacation-result-total10').innerHTML = `$${diezAnios.toFixed(2)} USD`;
     document.getElementById('vacation-result-total15').innerHTML = `$${quinceAnios.toFixed(2)} USD`;
     document.getElementById('vacation-result-total20').innerHTML = `$${veinteAnios.toFixed(2)} USD`;
+    document.getElementById('vacation-result-total30').innerHTML = `$${treintaAnios.toFixed(2)} USD`;
+
 
     // Generar la tabla de resumen
-    generateSummaryTable(totalSinInflacion, cincoAnios, diezAnios, quinceAnios, veinteAnios, inflationRates);
+    generateSummaryTable(totalSinInflacion, cincoAnios, diezAnios, quinceAnios, veinteAnios,treintaAnios, inflationRates);
 
     // Actualizar gráfica
     updateChart(inflationData.years.slice(yearIndex), adjustedValues);
     displayInflationTable(inflationRates, selectedCountry);
 }
 
-    function generateSummaryTable(sinInflacion, cincoAnios, diezAnios, quinceAnios, veinteAnios, inflationRates) {
+    function generateSummaryTable(sinInflacion, cincoAnios, diezAnios, quinceAnios, veinteAnios, treintaAnios, inflationRates) {
         const tableBody = document.getElementById('vacation-summary-table').querySelector('tbody');
         tableBody.innerHTML = ''; // Limpiar cualquier fila previa
 
@@ -302,6 +310,7 @@ window.onload = function () {
         const diezAcum = sinInflacion * 10;
         const quinceAcum = sinInflacion * 15;
         const veinteAcum = sinInflacion * 20;
+        const treintaAcum = sinInflacion * 30;
 
         const rows = [
             {
@@ -331,6 +340,13 @@ window.onload = function () {
                 total: veinteAnios,
                 minus20: veinteAnios * 0.2,
                 minus40: veinteAnios * 0.4
+            },
+            {
+                years: 30,
+                sinInflacion: veinteAcum,
+                total: treintaAnios,
+                minus20: treintaAnios * 0.2,
+                minus40: treintaAnios * 0.4
             }
         ];
 
