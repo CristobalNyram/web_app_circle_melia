@@ -1,3 +1,57 @@
+<style>
+    .custom-select {
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.custom-select img.selected-flag {
+    width: 24px;
+    height: 16px;
+    margin-right: 10px;
+}
+
+.country-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: none; /* Ocultar por defecto */
+    border: 1px solid #ccc;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    background-color: white;
+    z-index: 1;
+}
+
+.country-list li {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.country-list li:hover {
+    background-color: #f1f1f1;
+}
+
+.country-list img.flag {
+    width: 24px;
+    height: 16px;
+    margin-right: 10px;
+}
+
+/* Mostrar la lista cuando se hace clic */
+.custom-select.active .country-list {
+    display: block;
+}
+
+</style>
 <div class="page-container">
     <div class="main-content">
         <div class="row">
@@ -13,14 +67,10 @@
                                     placeholder="Presupuesto de vacaciones en USD" aria-label="Presupuesto">
                                 <input type="number" class="form-control" id="vacation-year-input"
                                     placeholder="Año inicial" step="0.0" aria-label="Año">
-                                <select id="vacation-country-select" class="form-control">
-                                    <option value="Estados Unidos">Estados Unidos</option>
-                                    <option value="México">México</option>
-                                    <option value="Canadá">Canadá</option>
-                                    <option value="España">España</option>
-                                    <option value="Chile">Chile</option>
-                                    <option value="Reino Unido">Reino Unido</option>
-                                </select>
+                                    <div id="vacation-country-select" class="custom-select">
+                                        <!-- Las opciones se cargarán dinámicamente -->
+                                    </div>
+
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" type="button" id="button-calculate-vacation"
                                         onclick="calculateVacation()">Calcular Presupuesto de Vacaciones</button>

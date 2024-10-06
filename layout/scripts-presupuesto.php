@@ -2,7 +2,104 @@
 <script src="assets/vendors/chartjs/Chart.min.js"></script>
 <script src="assets/js/app.min.js"></script>
 <script>
-  const inflationData = {
+
+    // CONTRIES 
+    
+    const countries = {
+    "México": {
+        flag: "https://flagcdn.com/w320/mx.png"
+    },
+    "Estados Unidos": {
+        flag: "https://flagcdn.com/w320/us.png"
+    },
+    "Canadá": {
+        flag: "https://flagcdn.com/w320/ca.png"
+    },
+    "España": {
+        flag: "https://flagcdn.com/w320/es.png"
+    },
+    "Chile": {
+        flag: "https://flagcdn.com/w320/cl.png"
+    },
+    "Reino Unido": {
+        flag: "https://flagcdn.com/w320/gb.png"
+    }
+};
+
+window.onload = function() {
+    const selectElement = document.getElementById("vacation-country-select");
+
+    // Crear una lista para simular el select
+    const ul = document.createElement("ul");
+    ul.classList.add("country-list");
+
+    // Agregar países a la lista
+    for (let country in countries) {
+        const li = document.createElement("li");
+
+        // Crear la imagen de la bandera
+        const img = document.createElement("img");
+        img.src = countries[country].flag;
+        img.alt = `${country} flag`;
+        img.classList.add("flag");
+
+        // Crear el texto del país
+        const span = document.createElement("span");
+        span.textContent = country;
+
+        // Agregar imagen y texto al elemento de la lista
+        li.appendChild(img);
+        li.appendChild(span);
+
+        // Agregar evento de selección
+        li.addEventListener("click", function(event) {
+            // Evitar la propagación del evento para que no reabra el menú
+            event.stopPropagation();
+
+            // Actualizar el país y bandera seleccionados
+            selectElement.querySelector("span.selected-country").textContent = country;
+            selectElement.querySelector("img.selected-flag").src = countries[country].flag;
+
+            // Ocultar la lista después de la selección
+            ul.style.display = "none";
+        });
+
+        // Agregar el elemento de la lista al contenedor
+        ul.appendChild(li);
+    }
+
+    // Crear la bandera y nombre seleccionado por defecto
+    const selectedFlag = document.createElement("img");
+    selectedFlag.classList.add("selected-flag");
+    selectedFlag.src = countries["México"].flag; // Mostrar la bandera de México por defecto
+
+    const selectedCountry = document.createElement("span");
+    selectedCountry.classList.add("selected-country");
+    selectedCountry.textContent = "México"; // Mostrar México por defecto
+
+    // Agregar los elementos seleccionados al contenedor
+    selectElement.appendChild(selectedFlag);
+    selectElement.appendChild(selectedCountry);
+    selectElement.appendChild(ul);
+
+    // Evento para mostrar/ocultar la lista al hacer clic en el select
+    selectElement.addEventListener("click", function() {
+        // Alternar la visibilidad de la lista
+        ul.style.display = ul.style.display === "block" ? "none" : "block";
+    });
+
+    // Cerrar la lista cuando se hace clic fuera de ella
+    document.addEventListener("click", function(event) {
+        if (!selectElement.contains(event.target)) {
+            ul.style.display = "none";
+        }
+    });
+};
+
+
+
+    // CONTRIES
+    const inflationData = {
         'México': [5.0, 4.8, 4.5, 4.3, 4.1, 4.0, 3.9, 3.8, 3.7, 3.6, 4.0, 4.1, 4.0, 4.2, 4.0, 4.1, 4.0, 4.1, 4.0, 4.2, 4.1, 4],
         'Estados Unidos': [3.2, 2.9, 2.7, 2.5, 2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 2.5, 2.6, 2.5, 2.7, 2.5, 2.6, 2.5, 2.7, 2.6, 2.5, 2.6, 2.5],
         'Canadá': [2.5, 2.3, 2.2, 2.1, 2.0, 1.9, 1.8, 1.7, 1.6, 1.5, 2.0, 2.1, 2.2, 2.1, 2.0, 2.1, 2.2, 2.0, 2.1, 2.0, 2.1, 2],
