@@ -4,100 +4,140 @@
 <script>
 
     // CONTRIES 
-    
     const countries = {
-    "México": {
-        flag: "https://flagcdn.com/w320/mx.png"
-    },
-    "Estados Unidos": {
-        flag: "https://flagcdn.com/w320/us.png"
-    },
-    "Canadá": {
-        flag: "https://flagcdn.com/w320/ca.png"
-    },
-    "España": {
-        flag: "https://flagcdn.com/w320/es.png"
-    },
-    "Chile": {
-        flag: "https://flagcdn.com/w320/cl.png"
-    },
-    "Reino Unido": {
-        flag: "https://flagcdn.com/w320/gb.png"
-    }
-};
+        "México": {
+            flag: "https://flagcdn.com/w320/mx.png"
+        },
+        "Estados Unidos": {
+            flag: "https://flagcdn.com/w320/us.png"
+        },
+        "Canadá": {
+            flag: "https://flagcdn.com/w320/ca.png"
+        },
+        "España": {
+            flag: "https://flagcdn.com/w320/es.png"
+        },
+        "Chile": {
+            flag: "https://flagcdn.com/w320/cl.png"
+        },
+        "Reino Unido": {
+            flag: "https://flagcdn.com/w320/gb.png"
+        },
+        "Colombia": {
+            flag: "https://flagcdn.com/w320/co.png"
+        },
+        "Argentina": {
+            flag: "https://flagcdn.com/w320/ar.png"
+        },
+        "Brasil": {
+            flag: "https://flagcdn.com/w320/br.png"
+        },
+        "Portugal": {
+            flag: "https://flagcdn.com/w320/pt.png"
+        },
+        "República Dominicana": {
+            flag: "https://flagcdn.com/w320/do.png"
+        }
+    };
 
-window.onload = function() {
-    const selectElement = document.getElementById("vacation-country-select");
+    window.onload = function () {
+        const selectElement = document.getElementById("vacation-country-select");
 
-    // Crear una lista para simular el select
-    const ul = document.createElement("ul");
-    ul.classList.add("country-list");
+        // Crear una lista para simular el select
+        const ul = document.createElement("ul");
+        ul.classList.add("country-list");
 
-    // Agregar países a la lista
-    for (let country in countries) {
-        const li = document.createElement("li");
+        // Crear el input de búsqueda como la primera opción
+        const searchInputLi = document.createElement("li");
+        const searchInput = document.createElement("input");
+        searchInput.type = "text";
+        searchInput.placeholder = "Buscar país...";
+        searchInput.classList.add("country-search");
 
-        // Crear la imagen de la bandera
-        const img = document.createElement("img");
-        img.src = countries[country].flag;
-        img.alt = `${country} flag`;
-        img.classList.add("flag");
+        // Agregar el input de búsqueda al elemento de la lista
+        searchInputLi.appendChild(searchInput);
+        ul.appendChild(searchInputLi);
 
-        // Crear el texto del país
-        const span = document.createElement("span");
-        span.textContent = country;
+        // Agregar países a la lista
+        for (let country in countries) {
+            const li = document.createElement("li");
 
-        // Agregar imagen y texto al elemento de la lista
-        li.appendChild(img);
-        li.appendChild(span);
+            // Crear la imagen de la bandera
+            const img = document.createElement("img");
+            img.src = countries[country].flag;
+            img.alt = `${country} flag`;
+            img.classList.add("flag");
 
-        // Agregar evento de selección
-        li.addEventListener("click", function(event) {
-            // Evitar la propagación del evento para que no reabra el menú
-            event.stopPropagation();
+            // Crear el texto del país
+            const span = document.createElement("span");
+            span.textContent = country;
 
-            // Actualizar el país y bandera seleccionados
-            selectElement.querySelector("span.selected-country").textContent = country;
-            selectElement.querySelector("img.selected-flag").src = countries[country].flag;
+            // Agregar imagen y texto al elemento de la lista
+            li.appendChild(img);
+            li.appendChild(span);
 
-            // Ocultar la lista después de la selección
-            ul.style.display = "none";
+            // Agregar evento de selección
+            li.addEventListener("click", function (event) {
+                event.stopPropagation();
+                // Actualizar el país y bandera seleccionados
+                selectElement.querySelector("span.selected-country").textContent = country;
+                selectElement.querySelector("img.selected-flag").src = countries[country].flag;
+
+                // Ocultar la lista después de la selección
+                ul.style.display = "none";
+                searchInput.value = ""; // Limpiar el campo de búsqueda al seleccionar un país
+            });
+
+            // Agregar el elemento de la lista al contenedor
+            ul.appendChild(li);
+        }
+
+        // Crear la bandera y nombre seleccionado por defecto
+        const selectedFlag = document.createElement("img");
+        selectedFlag.classList.add("selected-flag");
+        selectedFlag.src = countries["México"].flag; // Mostrar la bandera de México por defecto
+
+        const selectedCountry = document.createElement("span");
+        selectedCountry.classList.add("selected-country");
+        selectedCountry.textContent = "México"; // Mostrar México por defecto
+
+        // Agregar los elementos seleccionados al contenedor
+        selectElement.appendChild(selectedFlag);
+        selectElement.appendChild(selectedCountry);
+        selectElement.appendChild(ul);
+
+        // Evento para mostrar/ocultar la lista al hacer clic en el select
+        selectElement.addEventListener("click", function (event) {
+            ul.style.display = ul.style.display === "block" ? "none" : "block";
         });
 
-        // Agregar el elemento de la lista al contenedor
-        ul.appendChild(li);
-    }
+        // Evento de búsqueda
+        searchInput.addEventListener("input", function () {
+            const filter = searchInput.value.toLowerCase();
+            const liElements = ul.querySelectorAll("li:not(:first-child)"); // Excluir el input de búsqueda
+            liElements.forEach(li => {
+                const countryName = li.textContent.toLowerCase();
+                if (countryName.includes(filter)) {
+                    li.style.display = "";
+                } else {
+                    li.style.display = "none";
+                }
+            });
+        });
 
-    // Crear la bandera y nombre seleccionado por defecto
-    const selectedFlag = document.createElement("img");
-    selectedFlag.classList.add("selected-flag");
-    selectedFlag.src = countries["México"].flag; // Mostrar la bandera de México por defecto
+        // Cerrar la lista cuando se hace clic fuera de ella
+        document.addEventListener("click", function (event) {
+            if (!selectElement.contains(event.target)) {
+                ul.style.display = "none";
+                searchInput.value = ""; // Limpiar el campo de búsqueda al cerrar
+            }
+        });
 
-    const selectedCountry = document.createElement("span");
-    selectedCountry.classList.add("selected-country");
-    selectedCountry.textContent = "México"; // Mostrar México por defecto
-
-    // Agregar los elementos seleccionados al contenedor
-    selectElement.appendChild(selectedFlag);
-    selectElement.appendChild(selectedCountry);
-    selectElement.appendChild(ul);
-
-    // Evento para mostrar/ocultar la lista al hacer clic en el select
-    selectElement.addEventListener("click", function() {
-        // Alternar la visibilidad de la lista
-        ul.style.display = ul.style.display === "block" ? "none" : "block";
-    });
-
-    // Cerrar la lista cuando se hace clic fuera de ella
-    document.addEventListener("click", function(event) {
-        if (!selectElement.contains(event.target)) {
-            ul.style.display = "none";
-        }
-    });
-};
-
-
-
+        // Impedir el cierre de la lista al hacer clic en el input de búsqueda
+        searchInput.addEventListener("click", function (event) {
+            event.stopPropagation(); // Evitar que el clic se propague
+        });
+    };
     // CONTRIES
     const inflationData = {
         'México': [5.0, 4.8, 4.5, 4.3, 4.1, 4.0, 3.9, 3.8, 3.7, 3.6, 4.0, 4.1, 4.0, 4.2, 4.0, 4.1, 4.0, 4.1, 4.0, 4.2, 4.1, 4],

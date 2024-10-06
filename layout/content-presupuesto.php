@@ -8,6 +8,62 @@
     position: relative;
     display: flex;
     align-items: center;
+    flex-direction: column;
+}
+
+.custom-select img.selected-flag {
+    width: 24px;
+    height: 16px;
+    margin-right: 10px;
+}
+
+.country-search {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.country-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: none; /* Ocultar por defecto */
+    border: 1px solid #ccc;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    background-color: white;
+    z-index: 1;
+}
+
+.country-list li {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.country-list li:hover {
+    background-color: #f1f1f1;
+}
+
+.country-list img.flag {
+    width: 24px;
+    height: 16px;
+    margin-right: 10px;
+}
+
+    .custom-select {
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .custom-select img.selected-flag {
