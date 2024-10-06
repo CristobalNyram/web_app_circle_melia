@@ -38,7 +38,7 @@
     <h5 class="card-title" id="tourInfoTitle">Tour de Ubicaciones</h5>
     <p class="card-text" id="tourInfoDescription">Estamos recorriendo ubicaciones interesantes. Haga clic en las ubicaciones resaltadas para más información.</p>
     <div id="tourInfoDetails"></div>
-    <button id="cancelTour" class="btn btn-danger btn-sm">Cancelar Tour</button>
+    <button hidden id="cancelTour" class="btn btn-danger btn-sm">Cancelar Tour</button>
   </div>
 </div>
 
