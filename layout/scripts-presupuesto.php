@@ -241,25 +241,25 @@ const countries = {
     document.getElementById('vacation-result-total5').innerHTML = '';
 
     let cincoAnios = 0, diezAnios = 0, quinceAnios = 0, veinteAnios = 0,treintaAnios = 0;
-    let budgetResults = `
-    <table class="table table-bordered table-striped">
-        <tr class="bg-white">
-            <th>Año</th>
-            <th>Presupuesto Necesario (USD)</th>
-            <th>Inflación (%)</th>
-        </tr>`;
+    // let budgetResults = `
+    // <table class="table table-bordered table-striped">
+    //     <tr class="bg-white">
+    //         <th>Año</th>
+    //         <th>Presupuesto Necesario (USD)</th>
+    //         <th>Inflación (%)</th>
+    //     </tr>`;
 
     for (let i = yearIndex; i < inflationRates.length + yearIndex; i++) {
         const inflationRate = inflationRates[i - yearIndex] / 100;
         adjustedBudget *= (1 + inflationRate);
         adjustedValues.push(adjustedBudget.toFixed(2));
 
-        budgetResults += `
-        <tr class="bg-white">
-            <td>${inflationData.years[i]}</td>
-            <td>$${adjustedBudget.toFixed(2)}</td>
-            <td>${(inflationRates[i - yearIndex]).toFixed(2)}%</td>
-        </tr>`;
+        // budgetResults += `
+        // <tr class="bg-white">
+        //     <td>${inflationData.years[i]}</td>
+        //     <td>$${adjustedBudget.toFixed(2)}</td>
+        //     <td>${(inflationRates[i - yearIndex]).toFixed(2)}%</td>
+        // </tr>`;
 
         // Acumular totales para 5, 10, 15 y 20 años
         if (i - yearIndex < 5) {
@@ -280,8 +280,8 @@ const countries = {
         }
     }
 
-    budgetResults += `</table>`;
-    document.getElementById('vacation-result').innerHTML = budgetResults;
+    // budgetResults += `</table>`;
+    // document.getElementById('vacation-result').innerHTML = budgetResults;
 
     const tableElement = document.getElementById('vacation-summary-table');
     tableElement.classList.add('animate__animated', 'animate__fadeIn'); // Animación

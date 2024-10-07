@@ -38,7 +38,9 @@
     <h5 class="card-title" id="tourInfoTitle">Tour de Ubicaciones</h5>
     <p class="card-text" id="tourInfoDescription">Estamos recorriendo ubicaciones interesantes. Haga clic en las ubicaciones resaltadas para más información.</p>
     <div id="tourInfoDetails"></div>
-    <button hidden id="cancelTour" class="btn btn-danger btn-sm">Cancelar Tour</button>
+    <button  id="closeWindows" class="btn btn-warning btn-sm mt-2">Cerrar ventana</button>
+    <button  id="cancelTour" class="btn btn-danger btn-sm mt-2">Cancelar Tour</button>
+
   </div>
 </div>
 
@@ -54,11 +56,12 @@
 
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoibnlyYW1jYXV0aXZhIiwiYSI6ImNtMW8yemtjNDEwbzgycG85ZzhhenB2NGMifQ.SE8F9lJLM5o3kWxJv9wK7g';
+    let isTourCancelled = false; // Variable de control para saber si el tour está cancelado
 
     // Inicializa el mapa con un estilo plano
     const map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11', // Cambié a un estilo plano
+        style: 'mapbox://styles/mapbox/dark-v10', // Cambié a estilo oscuro
         center: [-99.9, 41.5], // Coordenadas iniciales
         zoom: 1, // Zoom alejado para ver gran parte del mundo
         fadeDuration: 0 // Eliminamos la animación predeterminada de fade-in
@@ -406,11 +409,13 @@
 
     // Función para hacer un recorrido horizontal entre las ubicaciones
     function activateHorizontalTour() {
+        isTourCancelled = false; // Restablecemos la variable de control
+
         let currentLocationIndex = 0;
         showTourInfo(nearbyLocations[currentLocationIndex]);
 
         function flyToNextLocation() {
-            if (currentLocationIndex < nearbyLocations.length) {
+            if (currentLocationIndex < nearbyLocations.length && !isTourCancelled) {
                 const location = nearbyLocations[currentLocationIndex];
 
                 // Mueve el mapa hacia la siguiente ubicación
@@ -423,7 +428,7 @@
                 // Después de volar a la ubicación, agregamos el marcador y popup
                 const marker = new mapboxgl.Marker({
                     color: 'yellow', // Marcador amarillo para destacar
-                    scale: 1.5 // Tamaño más grande
+                    scale: 2 // Tamaño más grande
                 })
                 .setLngLat(location.coordinates)
                 .setPopup(new mapboxgl.Popup().setText(location.description)) // Texto en el popup
@@ -491,13 +496,19 @@
         $('#locationModal').modal('show');
     }
 
+    function cancelTour() {
+        isTourCancelled = true; // Cambiamos la variable de control para detener el recorrido
+        hideTourInfo(); // Ocultamos la información del tour
+    }
     // Asignar la función de recorrido al botón
     document.getElementById('startTour').addEventListener('click', activateHorizontalTour);
 
     // Asignar la función de cancelar tour al botón
-    document.getElementById('cancelTour').addEventListener('click', function() {
+    document.getElementById('closeWindows').addEventListener('click', function() {
         hideTourInfo();
     });
+    document.getElementById('cancelTour').addEventListener('click', cancelTour);
+
 
     // Mostrar los puntos de ubicación al cargar la página
     function showNearbyLocations() {
@@ -524,7 +535,7 @@
                     setTimeout(() => {
                         const marker = new mapboxgl.Marker({
                             color: 'red', // Marcador de color rojo para resaltar
-                            scale: 0.5 // Tamaño más pequeño
+                            scale: 1.2 // Tamaño más pequeño
                         })
                         .setLngLat(location.coordinates)
                         .setPopup(new mapboxgl.Popup().setText(location.description)) // Texto en el popup
