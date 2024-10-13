@@ -2,7 +2,14 @@
 <html lang="en">
 
 <head>
-    <base href="../">
+<?php
+// Define a global variable ROOT_PATH if not already defined
+if (!defined('ROOT_PATH_ASSETS')) {
+    define('ROOT_PATH_ASSETS', '../'); // Default path if ROOT_PATH is not defined
+}
+?>
+
+    <base href="<?php echo ROOT_PATH_ASSETS; ?>">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Melia - App's</title>
@@ -13,6 +20,8 @@
     <!-- Core css -->
     <link href="assets/css/app.min.css" rel="stylesheet">
     <link href="assets/css/app.custom.css" rel="stylesheet">
+       <!-- page css -->
+       <link href="assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
     <script>
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.page-container');
