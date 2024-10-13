@@ -14,22 +14,60 @@ function saveUser() {
         $nombreUsuario = $data['nombreUsuario'] ?? null;
         $tipo = $data['tipo'] ?? null;
         $idUsuario = $data['usuarioId'] ?? null;
+        $nickname = $data['nickname'] ?? null;
+        $contrasenia = $data['contrasenia'] ?? null;
 
         if (!$nombreUsuario || !$tipo) {
             throw new Exception("Datos incompletos para crear o actualizar el usuario.");
         }
 
+        // Eliminar espacios y caracteres especiales del nickname
+        if ($nickname) {
+            $nickname = preg_replace('/[^A-Za-z0-9]/', '', $nickname); // Mantiene solo letras y números
+        }
+
+        // Eliminar espacios y caracteres especiales de la contraseña
+        if ($contrasenia) {
+            $contrasenia = preg_replace('/[^A-Za-z0-9]/', '', $contrasenia); // Mantiene solo letras y números
+        }
+
+        // Validar que el nickname no esté en uso por otro usuario
+        if ($nickname) {
+            $sqlCheckNickname = "SELECT idUsuario FROM usuarios WHERE nickname = :nickname AND idUsuario != :idUsuario";
+            $stmtCheckNickname = $pdo->prepare($sqlCheckNickname);
+            $stmtCheckNickname->execute([
+                'nickname' => $nickname,
+                'idUsuario' => $idUsuario ?? 0
+            ]);
+            $existingNickname = $stmtCheckNickname->fetch(PDO::FETCH_ASSOC);
+
+            if ($existingNickname) {
+                throw new Exception("El nickname ya está en uso, por favor elige otro.");
+            }
+        }
+
         if (empty($idUsuario)) {
             // Crear nuevo usuario
-            $sql = "INSERT INTO usuarios (nombreUsuario, tipo) VALUES (:nombreUsuario, :tipo)";
+            $sql = "INSERT INTO usuarios (nombreUsuario, tipo, nickname, contrasenia) VALUES (:nombreUsuario, :tipo, :nickname, :contrasenia)";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(['nombreUsuario' => $nombreUsuario, 'tipo' => $tipo]);
+            $stmt->execute([
+                'nombreUsuario' => $nombreUsuario,
+                'tipo' => $tipo,
+                'nickname' => $nickname,
+                'contrasenia' => $contrasenia
+            ]);
             $response['message'] = 'Usuario creado correctamente';
         } else {
             // Editar usuario existente
-            $sql = "UPDATE usuarios SET nombreUsuario = :nombreUsuario, tipo = :tipo WHERE idUsuario = :idUsuario";
+            $sql = "UPDATE usuarios SET nombreUsuario = :nombreUsuario, tipo = :tipo, nickname = :nickname, contrasenia = :contrasenia WHERE idUsuario = :idUsuario";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(['nombreUsuario' => $nombreUsuario, 'tipo' => $tipo, 'idUsuario' => $idUsuario]);
+            $stmt->execute([
+                'nombreUsuario' => $nombreUsuario,
+                'tipo' => $tipo,
+                'nickname' => $nickname,
+                'contrasenia' => $contrasenia,
+                'idUsuario' => $idUsuario
+            ]);
             $response['message'] = 'Usuario actualizado correctamente';
         }
 

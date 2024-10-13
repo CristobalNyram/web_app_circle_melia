@@ -22,6 +22,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre Completo</th>
+                                <th>Nickname</th>
                                 <th>Tipo</th>
                                 <th>Acciones</th>
                             </tr>
@@ -52,6 +53,14 @@
                         <div class="form-group">
                             <label for="nombreUsuario">Nombre Completo</label>
                             <input type="text" class="form-control" id="nombreUsuario" maxlength="55" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nickname">Nickname</label>
+                            <input type="text" class="form-control" id="nickname" maxlength="50" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contrasenia">Contraseña</label>
+                            <input type="text" class="form-control" id="contrasenia" maxlength="100" required>
                         </div>
                         <div class="form-group">
                             <label for="tipoUsuario">Tipo de Usuario</label>
@@ -99,6 +108,7 @@
                     const row = `<tr>
                         <td>${usuario.idUsuario}</td>
                         <td>${usuario.nombreUsuario}</td>
+                        <td>${usuario.nickname ?? ''}</td>
                         <td>${usuario.tipo}</td>
                         <td>
                             <button class="btn btn-warning btn-sm" onclick="editarUsuario(${usuario.idUsuario})">Editar</button>
@@ -119,6 +129,8 @@
     function guardarUsuario() {
         const usuarioId = document.getElementById('usuarioId').value;
         const nombreUsuario = document.getElementById('nombreUsuario').value;
+        const nickname = document.getElementById('nickname').value;
+        const contrasenia = document.getElementById('contrasenia').value;
         const tipoUsuario = document.getElementById('tipoUsuario').value;
 
         if (nombreUsuario.length > 55) {
@@ -146,7 +158,13 @@
             ? `<?php echo BASE_URL_PROJECT.'app/api/v1/users/?action=save'; ?>`
             : "<?php echo BASE_URL_PROJECT.'app/api/v1/users/?action=save'; ?>";
 
-        let dataJson = JSON.stringify({ usuarioId: usuarioId, nombreUsuario: nombreUsuario, tipo: tipoUsuario });
+        let dataJson = JSON.stringify({ 
+            usuarioId: usuarioId, 
+            nombreUsuario: nombreUsuario, 
+            nickname: nickname, 
+            contrasenia: contrasenia,
+            tipo: tipoUsuario 
+        });
 
         fetch(api, {
             method: metodo,
@@ -156,6 +174,7 @@
             .then(response => response.json())
             .then((res) => {
                 let data = res.data;
+                console.log(res);
                 if (res.status) {
                     Swal.fire({
                         title: 'Éxito',
@@ -192,8 +211,11 @@
             .then(response => response.json())
             .then(res => {
                 let usuario = res.data ?? [];
+                console.log(res);
                 document.getElementById('usuarioId').value = usuario.idUsuario;
                 document.getElementById('nombreUsuario').value = usuario.nombreUsuario;
+                document.getElementById('nickname').value = usuario.nickname;
+                document.getElementById('contrasenia').value = usuario.contrasenia;
                 document.getElementById('tipoUsuario').value = usuario.tipo;
                 document.getElementById('usuarioModalLabel').innerText = 'Editar Usuario';
                 $('#usuarioModal').modal('show');
@@ -201,55 +223,11 @@
             .catch(error => console.error('Error:', error));
     }
 
-    function eliminarUsuario(idUsuario) {
-        Swal.fire({
-            title: '¿Estás seguro?',
-            text: "No podrás revertir esto",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let api = `<?php echo BASE_URL_PROJECT.'app/api/v1/users/?action=delete&idUsuario='; ?>${idUsuario}`;
-
-                fetch(api, { method: 'DELETE' })
-                    .then(response => response.json())
-                    .then((res) => {
-                        if (res.status) {
-                        Swal.fire(
-                            'Eliminado',
-                            res.message || 'El usuario ha sido eliminado', // Mensaje desde el backend
-                            'success'
-                        );
-                        cargarUsuarios();
-                    } else {
-                        Swal.fire({
-                            title: 'Error',
-                            text: res.message || 'No se pudo eliminar el usuario', // Mensaje desde el backend
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'Hubo un error al eliminar el usuario',
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
-                    });
-            }
-        });
-    }
-
     function limpiarFormulario() {
         document.getElementById('usuarioId').value = '';
         document.getElementById('nombreUsuario').value = '';
+        document.getElementById('nickname').value = '';
+        document.getElementById('contrasenia').value = '';
         document.getElementById('tipoUsuario').value = '';
     }
 </script>

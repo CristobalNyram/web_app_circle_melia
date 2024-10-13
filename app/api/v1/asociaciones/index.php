@@ -28,6 +28,14 @@ try {
             $response = listarAsociacionesEquipoCompetencia();
             break;
 
+        case 'editarUsuarioEquipo':
+            $response = editarUsuarioEquipo();
+            break;
+
+        case 'editarEquipoCompetencia':
+            $response = editarEquipoCompetencia();
+            break;
+
         default:
             $response['message'] = 'Acción no válida';
     }

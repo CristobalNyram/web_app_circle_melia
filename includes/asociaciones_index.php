@@ -1,6 +1,4 @@
 <div class="page-container">
-
-    <!-- Content Wrapper START -->
     <div class="main-content">
         <div class="page-header">
             <h2 class="header-title">Asociación de Usuarios con Equipos y Equipos con Competencias</h2>
@@ -12,6 +10,7 @@
                 </nav>
             </div>
         </div>
+
         <div class="card">
             <div class="card-body">
                 <h4>Asociar Usuarios a Equipos</h4>
@@ -48,7 +47,6 @@
             </div>
         </div>
     </div>
-    <!-- Content Wrapper END -->
 
     <!-- Modal para asociaciones de usuarios con equipos -->
     <div class="modal fade" id="asociacionesUsuarioEquipoModal" tabindex="-1" role="dialog" aria-labelledby="asociacionesUsuarioEquipoModalLabel" aria-hidden="true">
@@ -67,6 +65,7 @@
                                 <th>ID Usuario</th>
                                 <th>Nombre Usuario</th>
                                 <th>Nombre Equipo</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,6 +76,7 @@
             </div>
         </div>
     </div>
+
     <!-- Modal para asociaciones de equipos con competencias -->
     <div class="modal fade" id="asociacionesEquipoCompetenciaModal" tabindex="-1" role="dialog" aria-labelledby="asociacionesEquipoCompetenciaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -93,12 +93,77 @@
                             <tr>
                                 <th>Nombre Equipo</th>
                                 <th>Nombre Competencia</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <!-- Contenido dinámico -->
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar asociación usuario-equipo -->
+    <div class="modal fade" id="editarUsuarioEquipoModal" tabindex="-1" role="dialog" aria-labelledby="editarUsuarioEquipoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarUsuarioEquipoModalLabel">Editar Asociación de Usuario con Equipo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formulario-editar-usuario-equipo">
+                        <input type="hidden" id="editarUsuarioId">
+                        <input type="hidden" id="editarEquipoId">
+                        <div class="form-group">
+                            <label for="nuevoUsuarioId">Nuevo Usuario</label>
+                            <select class="form-control" id="nuevoUsuarioId" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nuevoEquipoId">Nuevo Equipo</label>
+                            <select class="form-control" id="nuevoEquipoId" required></select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarCambiosUsuarioEquipo()">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar asociación equipo-competencia -->
+    <div class="modal fade" id="editarEquipoCompetenciaModal" tabindex="-1" role="dialog" aria-labelledby="editarEquipoCompetenciaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarEquipoCompetenciaModalLabel">Editar Asociación de Equipo con Competencia</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formulario-editar-equipo-competencia">
+                        <input type="hidden" id="editarEquipoCompId">
+                        <input type="hidden" id="editarCompetenciaId">
+                        <div class="form-group">
+                            <label for="nuevoEquipoCompId">Nuevo Equipo</label>
+                            <select class="form-control" id="nuevoEquipoCompId" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nuevoCompetenciaId">Nueva Competencia</label>
+                            <select class="form-control" id="nuevoCompetenciaId" required></select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarCambiosEquipoCompetencia()">Guardar cambios</button>
                 </div>
             </div>
         </div>
@@ -120,13 +185,18 @@
         fetch(api)
             .then(response => response.json())
             .then(res => {
-                let usuarios = res.data ?? [];
+                console.log(res);
+                let usuariosCrudo = res.data ?? [];
+                let usuarios = usuariosCrudo.filter(usuario => usuario.tipo === 'vendedor');
+
                 const usuarioSelect = document.getElementById('usuarioId');
+                const nuevoUsuarioSelect = document.getElementById('nuevoUsuarioId');
                 usuarios.forEach(usuario => {
                     let option = document.createElement('option');
                     option.value = usuario.idUsuario;
                     option.text = usuario.nombreUsuario;
                     usuarioSelect.add(option);
+                    nuevoUsuarioSelect.add(option.cloneNode(true));
                 });
             });
     }
@@ -139,12 +209,16 @@
                 let equipos = res.data ?? [];
                 const equipoSelect1 = document.getElementById('equipoId');
                 const equipoSelect2 = document.getElementById('equipoIdComp');
+                const nuevoEquipoSelect = document.getElementById('nuevoEquipoId');
+                const nuevoEquipoCompSelect = document.getElementById('nuevoEquipoCompId');
                 equipos.forEach(equipo => {
                     let option = document.createElement('option');
                     option.value = equipo.idEquipo;
                     option.text = equipo.nombreEquipo;
                     equipoSelect1.add(option);
-                    equipoSelect2.add(option);
+                    equipoSelect2.add(option.cloneNode(true));
+                    nuevoEquipoSelect.add(option.cloneNode(true));
+                    nuevoEquipoCompSelect.add(option.cloneNode(true));
                 });
             });
     }
@@ -156,11 +230,13 @@
             .then(res => {
                 let competencias = res.data ?? [];
                 const competenciaSelect = document.getElementById('competenciaId');
+                const nuevoCompetenciaSelect = document.getElementById('nuevoCompetenciaId');
                 competencias.forEach(competencia => {
                     let option = document.createElement('option');
                     option.value = competencia.idCompetencia;
                     option.text = competencia.nombreCompetencia;
                     competenciaSelect.add(option);
+                    nuevoCompetenciaSelect.add(option.cloneNode(true));
                 });
             });
     }
@@ -265,6 +341,9 @@
                         <td>${asociacion.idUsuario}</td>
                         <td>${asociacion.nombreUsuario}</td>
                         <td>${asociacion.nombreEquipo}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="editarAsociacionUsuarioEquipo(${asociacion.idUsuario}, ${asociacion.idEquipo})">Editar</button>
+                        </td>
                     </tr>`;
                     tableBody.insertAdjacentHTML('beforeend', row);
                 });
@@ -284,9 +363,98 @@
                     const row = `<tr>
                         <td>${asociacion.nombreEquipo}</td>
                         <td>${asociacion.nombreCompetencia}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="editarAsociacionEquipoCompetencia(${asociacion.idEquipo}, ${asociacion.idCompetencia})">Editar</button>
+                        </td>
                     </tr>`;
                     tableBody.insertAdjacentHTML('beforeend', row);
                 });
             });
+    }
+
+    function editarAsociacionUsuarioEquipo(idUsuario, idEquipo) {
+        document.getElementById('editarUsuarioId').value = idUsuario;
+        document.getElementById('editarEquipoId').value = idEquipo;
+        $('#editarUsuarioEquipoModal').modal('show');
+    }
+
+    function guardarCambiosUsuarioEquipo() {
+        const usuarioId = document.getElementById('editarUsuarioId').value;
+        const equipoId = document.getElementById('editarEquipoId').value;
+        const nuevoUsuarioId = document.getElementById('nuevoUsuarioId').value;
+        const nuevoEquipoId = document.getElementById('nuevoEquipoId').value;
+
+        let api = "<?php echo BASE_URL_PROJECT.'app/api/v1/asociaciones/?action=editarUsuarioEquipo'; ?>";
+        let dataJson = JSON.stringify({ usuarioId: usuarioId, equipoId: equipoId, nuevoUsuarioId: nuevoUsuarioId, nuevoEquipoId: nuevoEquipoId });
+
+        fetch(api, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: dataJson
+        })
+        .then(response => response.json())
+        .then(res => {
+            if (res.status) {
+                Swal.fire({
+                    title: 'Éxito',
+                    text: res.message,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+                $('#editarUsuarioEquipoModal').modal('hide');
+                cargarAsociacionesUsuarioEquipo();
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: res.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function editarAsociacionEquipoCompetencia(idEquipo, idCompetencia) {
+        document.getElementById('editarEquipoCompId').value = idEquipo;
+        document.getElementById('editarCompetenciaId').value = idCompetencia;
+        $('#editarEquipoCompetenciaModal').modal('show');
+    }
+
+    function guardarCambiosEquipoCompetencia() {
+        const equipoId = document.getElementById('editarEquipoCompId').value;
+        const competenciaId = document.getElementById('editarCompetenciaId').value;
+        const nuevoEquipoId = document.getElementById('nuevoEquipoCompId').value;
+        const nuevoCompetenciaId = document.getElementById('nuevoCompetenciaId').value;
+
+        let api = "<?php echo BASE_URL_PROJECT.'app/api/v1/asociaciones/?action=editarEquipoCompetencia'; ?>";
+        let dataJson = JSON.stringify({ equipoId: equipoId, competenciaId: competenciaId, nuevoEquipoId: nuevoEquipoId, nuevoCompetenciaId: nuevoCompetenciaId });
+
+        fetch(api, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: dataJson
+        })
+        .then(response => response.json())
+        .then(res => {
+            if (res.status) {
+                Swal.fire({
+                    title: 'Éxito',
+                    text: res.message,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+                $('#editarEquipoCompetenciaModal').modal('hide');
+                cargarAsociacionesEquipoCompetencia();
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: res.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        })
+        .catch(error => console.error('Error:', error));
     }
 </script>
