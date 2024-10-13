@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include 'services.php'; // Archivo con las funciones
+include 'services.php'; // Archivo con las funciones para equipos
 $response = ['status' => false, 'message' => '', 'data' => []];
 
 try {
@@ -13,29 +13,29 @@ try {
 
     switch ($action) {
         case 'save':
-            $response = saveUser();
+            $response = saveTeam();
             break;
 
         case 'get':
-            $idUsuario = $_REQUEST['idUsuario'] ?? null;
-            if ($idUsuario) {
-                $response = getUser($idUsuario);
+            $idEquipo = $_REQUEST['idEquipo'] ?? null;
+            if ($idEquipo) {
+                $response = getTeam($idEquipo);
             } else {
-                $response['message'] = 'ID de usuario no proporcionado';
+                $response['message'] = 'ID del equipo no proporcionado';
             }
             break;
 
         case 'delete':
-            $idUsuario = $_REQUEST['idUsuario'] ?? null;
-            if ($idUsuario) {
-                $response = deleteUser($idUsuario);
+            $idEquipo = $_REQUEST['idEquipo'] ?? null;
+            if ($idEquipo) {
+                $response = deleteTeam($idEquipo);
             } else {
-                $response['message'] = 'ID de usuario no proporcionado';
+                $response['message'] = 'ID del equipo no proporcionado';
             }
             break;
 
         case 'list':
-            $response = listUsers();
+            $response = listTeams();
             break;
 
         default:

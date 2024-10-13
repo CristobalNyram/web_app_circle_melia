@@ -2,7 +2,7 @@
 $host = 'localhost';
 $db   = 'ventas_competencias';
 $user = 'root';
-$pass = 'tu_password';
+$pass = '';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

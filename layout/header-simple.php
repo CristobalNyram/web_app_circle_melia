@@ -19,7 +19,7 @@ if (!defined('ROOT_PATH_ASSETS')) {
 
     <!-- Core css -->
     <link href="assets/css/app.min.css" rel="stylesheet">
-    <link href="assets/css/app.custom.css" rel="stylesheet">
+    <!-- <link href="assets/css/app.custom.css" rel="stylesheet"> -->
     
        <!-- page css -->
        <link href="assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">

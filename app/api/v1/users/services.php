@@ -1,16 +1,23 @@
 <?php
-include 'db.php'; // Conexión a la base de datos
+include '../../../database/db.php'; // Conexión a la base de datos
 
-function saveUser($data) {
+function saveUser() {
     global $pdo;
     $response = ['status' => false, 'message' => ''];
 
+    // Decodificar los datos enviados por el cliente
+    $data = json_decode(file_get_contents("php://input"), true);
+
     try {
         $pdo->beginTransaction();
-        
-        $nombreUsuario = $data['nombreUsuario'];
-        $tipo = $data['tipo'];
-        $idUsuario = $data['idUsuario'];
+
+        $nombreUsuario = $data['nombreUsuario'] ?? null;
+        $tipo = $data['tipo'] ?? null;
+        $idUsuario = $data['usuarioId'] ?? null;
+
+        if (!$nombreUsuario || !$tipo) {
+            throw new Exception("Datos incompletos para crear o actualizar el usuario.");
+        }
 
         if (empty($idUsuario)) {
             // Crear nuevo usuario
@@ -92,4 +99,10 @@ function listUsers() {
 
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $response['status'] = true;
-        $response['data'] = $users
+        $response['data'] = $users;
+    } catch (Exception $e) {
+        $response['message'] = 'Error: ' . $e->getMessage();
+    }
+
+    return $response;
+}

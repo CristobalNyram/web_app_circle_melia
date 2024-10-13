@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include 'services.php'; // Archivo con las funciones
+include 'services.php'; // Archivo con las funciones para competencias
 $response = ['status' => false, 'message' => '', 'data' => []];
 
 try {
@@ -13,29 +13,32 @@ try {
 
     switch ($action) {
         case 'save':
-            $response = saveUser();
+            $response = saveCompetencia();
             break;
 
         case 'get':
-            $idUsuario = $_REQUEST['idUsuario'] ?? null;
-            if ($idUsuario) {
-                $response = getUser($idUsuario);
+            $idCompetencia = $_REQUEST['idCompetencia'] ?? null;
+            if ($idCompetencia) {
+                $response = getCompetencia($idCompetencia);
             } else {
-                $response['message'] = 'ID de usuario no proporcionado';
+                $response['message'] = 'ID de la competencia no proporcionado';
             }
             break;
 
         case 'delete':
-            $idUsuario = $_REQUEST['idUsuario'] ?? null;
-            if ($idUsuario) {
-                $response = deleteUser($idUsuario);
+            $idCompetencia = $_REQUEST['idCompetencia'] ?? null;
+            if ($idCompetencia) {
+                $response = deleteCompetencia($idCompetencia);
             } else {
-                $response['message'] = 'ID de usuario no proporcionado';
+                $response['message'] = 'ID de la competencia no proporcionado';
             }
             break;
 
         case 'list':
-            $response = listUsers();
+            $response = listCompetencias();
+            break;
+        case 'listVentasCompetencia':
+            $response = listVentasCompetencia();
             break;
 
         default:

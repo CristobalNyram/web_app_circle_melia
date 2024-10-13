@@ -5,7 +5,10 @@
     define("DB_PASSWORD_MAIN", "");
     define("DB_NAME_MAIN", "apiintegra_core");
     define("DB_PREFIX", "");
+    define("BASE_URL_PROJECT", "http://127.0.0.1/MIDAS/app-calculo-inflacion/");
 
+
+    
     // Definir el entorno: 'development' o 'production'
     define("ENVIRONMENT", "development"); // Cambia a 'production' para producción
 
