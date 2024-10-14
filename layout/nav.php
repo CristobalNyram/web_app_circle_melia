@@ -36,12 +36,47 @@
                 </a>
             </li>
         </ul>
-        <ul hidden class="nav-right">
+        <ul  
+        <?php if (isset($_SESSION['tipo'])): ?>
+        <?php else: ?>
+        hidden
+        <?php endif; ?>
+            class="nav-right">
             <li class="dropdown dropdown-animated scale-left">
                 <div class="pointer" data-toggle="dropdown">
                     <div class="avatar avatar-image  m-h-10 m-r-15">
                         <img src="https://academy.trainingmidas.com/assets/images/own/instructores/Bernardoo.png"  alt="">
                     </div>
+
+                    <div class="p-b-15 p-t-20 dropdown-menu pop-profile">
+                                <div class="p-h-20 p-b-15 m-b-10 border-bottom">
+                                    <div class="d-flex m-r-50">
+                                        <div class="avatar avatar-lg avatar-image">
+                                            <img src="https://academy.trainingmidas.com/assets/images/own/instructores/Bernardoo.png" alt="">
+                                        </div>
+                                        <div class="m-l-10">
+                                            <p class="m-b-0 text-dark font-weight-semibold">
+                                                
+                                            <?php if (isset($_SESSION['tipo'])): ?>
+                                                <?php echo "USUARIO: ".strtoupper(htmlspecialchars($_SESSION['tipo'], ENT_QUOTES, 'UTF-8')); ?>
+                                                <?php else: ?>
+                                                <span>... </span>
+                                            <?php endif; ?>
+                                            </p>
+                                            <p class="m-b-0 opacity-07">..</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a   onclick="window.location.href='pages/logout/'"  class="dropdown-item d-block p-h-15 p-v-10">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <i class="anticon opacity-04 font-size-16 anticon-logout"></i>
+                                            <span class="m-l-10">Logout</span>
+                                        </div>
+                                        <i hidden class="anticon font-size-10 anticon-right"></i>
+                                    </div>
+                                </a>
+                            </div>
                 </div>
             </li>
             <li>

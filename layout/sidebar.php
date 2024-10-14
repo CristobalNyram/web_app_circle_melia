@@ -45,9 +45,9 @@
                             <li class="">
                                 <a href="pages/usuarios/">Usuarios</a>
                             </li>
-                        <?php elseif ($_SESSION['tipo'] == 'vendedor'): ?>
+                        <?php elseif ($_SESSION['tipo'] == 'equipo'): ?>
                             <li class="">
-                                <a href="ventas">Mis ventas</a>
+                                <a href="pages/ventas-equipo">Ventas de mi equipo</a>
                             </li>
                         <?php endif; ?>
                     <?php endif; ?>
