@@ -15,7 +15,9 @@ try {
         case 'save':
             $response = saveCompetencia();
             break;
-
+        case 'listCompetenciasEquipo':
+            $response = listCompetenciasEquipo();
+            break;
         case 'get':
             $idCompetencia = $_REQUEST['idCompetencia'] ?? null;
             if ($idCompetencia) {

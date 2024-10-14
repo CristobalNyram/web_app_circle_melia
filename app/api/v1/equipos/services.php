@@ -88,6 +88,42 @@ function deleteTeam($idEquipo) {
     return $response;
 }
 
+
+// Función para listar los integrantes de un equipo
+function listIntegrantesEquipo() {
+    global $pdo;
+    $response = ['status' => false, 'message' => '', 'data' => []];
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    try {
+        $equipoId = $data['equipoId'] ?? null;
+
+        if (!$equipoId) {
+            throw new Exception("ID del equipo no proporcionado.");
+        }
+
+        // Obtener los integrantes del equipo
+        $sql = "SELECT eu.id as idIntegrante, u.nombreUsuario as nombre
+                FROM equipo_usuarios eu
+                JOIN usuarios u ON eu.idUsuario = u.idUsuario
+                WHERE eu.idEquipo = :equipoId AND eu.activo = 1";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['equipoId' => $equipoId]);
+        $integrantes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($integrantes) {
+            $response['status'] = true;
+            $response['data'] = $integrantes;
+        } else {
+            $response['message'] = 'No se encontraron integrantes para este equipo.';
+        }
+    } catch (Exception $e) {
+        $response['message'] = 'Error: ' . $e->getMessage();
+    }
+
+    return $response;
+}
+
 function listTeams() {
     global $pdo;
     $response = ['status' => false, 'message' => '', 'data' => []];

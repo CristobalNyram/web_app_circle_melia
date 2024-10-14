@@ -135,6 +135,7 @@
 
         equipos.forEach(equipo => {
             const progress = (equipo.ventasAcumuladas / equipo.metaVentas) * 100;
+            // console.log(equipo);
             const card = `
                 <div class="col-md-4 col-12 col-lg-6">
                     <div class="card mb-3">
@@ -154,8 +155,8 @@
 
     function verDetalleVentas(equipoId) {
         let api = "<?php echo BASE_URL_PROJECT.'app/api/v1/ventas/?action=detalleVentas'; ?>";
-        let dataJson = JSON.stringify({ equipoId: equipoId });
-
+        let dataJson = JSON.stringify({ equipoId: equipoId, });
+        console.log(dataJson);
         fetch(api, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

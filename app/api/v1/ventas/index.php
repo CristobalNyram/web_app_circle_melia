@@ -15,15 +15,27 @@ try {
         case 'listVentasCompetencia':
             $response = listVentasCompetencia();
             break;
-
+         case 'getVentasByEquipoComptencia':
+                $response = getVentasByEquipoComptencia();
+                break;
         case 'detalleVentas':
             $response = detalleVentas();
             break;
 
+        case 'guardarVenta':
+            $response = guardarVenta();
+            break;
+
+        case 'eliminarVenta':
+            $response = eliminarVenta();
+            break;
+
+        case 'editarVenta':
+            $response = editarVenta();
+
         default:
             $response['message'] = 'Acción no válida';
     }
-
 } catch (Exception $e) {
     $response['message'] = 'Error general: ' . $e->getMessage();
 }

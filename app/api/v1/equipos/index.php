@@ -38,10 +38,12 @@ try {
             $response = listTeams();
             break;
 
+        case 'listIntegrantesEquipo': // Nueva acción para listar los integrantes del equipo
+            $response = listIntegrantesEquipo();
+            break;
         default:
             $response['message'] = 'Acción no válida';
     }
-
 } catch (Exception $e) {
     $response['message'] = 'Error general: ' . $e->getMessage();
 }

@@ -108,3 +108,41 @@ function listCompetencias() {
 
     return $response;
 }
+function listCompetenciasEquipo() {
+    global $pdo;
+    $response = ['status' => false, 'message' => '', 'data' => []];
+
+    // Obtener los datos de la solicitud
+    $data = json_decode(file_get_contents("php://input"), true);
+    
+    try {
+        $equipoId = $data['equipoId'] ?? null;
+
+        if (!$equipoId) {
+            throw new Exception("El ID del equipo es requerido.");
+        }
+
+        // Consultar las competencias a las que está inscrito el equipo
+        $sql = "
+            SELECT c.idCompetencia, c.nombreCompetencia, c.metaVentas
+            FROM competencias c
+            JOIN competencias_equipo ce ON ce.idCompetencia = c.idCompetencia
+            WHERE ce.idEquipo = :equipoId AND ce.activo = 1
+        ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['equipoId' => $equipoId]);
+
+        $competencias = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($competencias) {
+            $response['status'] = true;
+            $response['data'] = $competencias;
+        } else {
+            throw new Exception("El equipo no tiene competencias inscritas.");
+        }
+    } catch (Exception $e) {
+        $response['message'] = 'Error: ' . $e->getMessage();
+    }
+
+    return ($response);
+}
