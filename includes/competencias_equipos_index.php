@@ -124,7 +124,7 @@
         const metaContainer = document.getElementById('meta-container');
         metaContainer.innerHTML = `
             <div class="col-12">
-                <h3>Meta de Ventas para ${competencia.nombreCompetencia}: ${competencia.metaVentas}</h3>
+                <h3>Meta de Ventas para ${competencia.nombreCompetencia}: $ ${competencia.metaVentas}</h3>
             </div>
         `;
     }
@@ -135,15 +135,25 @@
 
         equipos.forEach(equipo => {
             const progress = (equipo.ventasAcumuladas / equipo.metaVentas) * 100;
-            // console.log(equipo);
+            let progressBarClass = '';
+
+            // Asignar clase de Bootstrap según el progreso
+            if (progress < 50) {
+                progressBarClass = 'bg-danger'; // Rojo
+            } else if (progress >= 50 && progress < 80) {
+                progressBarClass = 'bg-warning'; // Naranja
+            } else {
+                progressBarClass = 'bg-success'; // Verde
+            }
+
             const card = `
                 <div class="col-md-4 col-12 col-lg-6">
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">Equipo: ${equipo.nombreEquipo}</h5>
-                            <p class="card-text">Ventas Totales: ${equipo.ventasAcumuladas}</p>
+                            <p class="card-text">Ventas Totales:$${equipo.ventasAcumuladas}</p>
                             <div class="progress mb-3">
-                                <div class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar ${progressBarClass}" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                             <button class="btn btn-info" onclick="verDetalleVentas(${equipo.idEquipo})">Ver Detalle de Ventas</button>
                         </div>
@@ -181,41 +191,40 @@
     }
 
     function mostrarDetalleVentas(ventas) {
-    const detalleBody = document.getElementById('detalleVentasBody');
-    detalleBody.innerHTML = ''; // Limpiar contenido previo
+        const detalleBody = document.getElementById('detalleVentasBody');
+        detalleBody.innerHTML = ''; // Limpiar contenido previo
 
-    ventas.forEach(venta => {
-        let badgeColor = '';
-        let badgeText = '';
+        ventas.forEach(venta => {
+            let badgeColor = '';
+            let badgeText = '';
 
-        switch (venta.estado) {
-            case 1:
-                badgeColor = 'badge-warning'; // Estado en "Stand by"
-                badgeText = 'Stand by';
-                break;
-            case 2:
-                badgeColor = 'badge-success'; // Estado "Activo"
-                badgeText = 'Activo';
-                break;
-            case -2:
-                badgeColor = 'badge-danger'; // Estado "Cancelado"
-                badgeText = 'Cancelado';
-                break;
-            default:
-                badgeColor = 'badge-secondary'; // Estado "Desconocido"
-                badgeText = 'Desconocido';
-                break;
-        }
+            switch (venta.estado) {
+                case 1:
+                    badgeColor = 'badge-warning'; // Estado en "Stand by"
+                    badgeText = 'Stand by';
+                    break;
+                case 2:
+                    badgeColor = 'badge-success'; // Estado "Activo"
+                    badgeText = 'Activo';
+                    break;
+                case -2:
+                    badgeColor = 'badge-danger'; // Estado "Cancelado"
+                    badgeText = 'Cancelado';
+                    break;
+                default:
+                    badgeColor = 'badge-secondary'; // Estado "Desconocido"
+                    badgeText = 'Desconocido';
+                    break;
+            }
 
-        const row = `
-            <tr>
-                <td>${venta.nombreVendedor}</td>
-                <td>${venta.monto}</td>
-                <td><span class="badge ${badgeColor}">${badgeText}</span></td>
-                <td>${venta.fecha}</td>
-            </tr>`;
-        detalleBody.insertAdjacentHTML('beforeend', row);
-    });
-}
-
+            const row = `
+                <tr>
+                    <td>${venta.nombreVendedor}</td>
+                    <td>${venta.monto}</td>
+                    <td><span class="badge ${badgeColor}">${badgeText}</span></td>
+                    <td>${venta.fecha}</td>
+                </tr>`;
+            detalleBody.insertAdjacentHTML('beforeend', row);
+        });
+    }
 </script>

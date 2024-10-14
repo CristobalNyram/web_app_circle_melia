@@ -141,31 +141,32 @@ function guardarVenta() {
     global $pdo;
     $response = ['status' => false, 'message' => '', 'data' => []];
     $data = json_decode(file_get_contents("php://input"), true);
-
     try {
         $equipoId = $data['equipoId'] ?? null;
         $competenciaId = $data['competenciaId'] ?? null;
         $monto = $data['monto'] ?? null;
         $fechaVenta = $data['fechaVenta'] ?? null;
+        $estatus = $data['estatus'] ?? null;
         $idEquipoUsuario = $data['idIntegrante'] ?? null;
 
-        if (!$equipoId || !$competenciaId || !$monto || !$fechaVenta || !$idEquipoUsuario) {
+        if (!$equipoId || !$competenciaId || !$monto || !$fechaVenta || !$idEquipoUsuario ||  !$estatus) {
             throw new Exception("Datos incompletos para registrar la venta.");
         }
 
         // Insertar una nueva venta
         $sql = "INSERT INTO competencias_equipos_usuarios_ventas (idCompetencia, idEquipoUsuario, monto, fechaVenta, estatus, activo)
-                VALUES (:competenciaId, :idEquipoUsuario, :monto, :fechaVenta, 1, 1)";
+                VALUES (:competenciaId, :idEquipoUsuario, :monto, :fechaVenta,:estatus, 1)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             'competenciaId' => $competenciaId,
             'idEquipoUsuario' => $idEquipoUsuario,
             'monto' => $monto,
+            'estatus' => $estatus,
             'fechaVenta' => $fechaVenta
         ]);
 
         // Verificar el estatus y actualizar ventas acumuladas
-        if ($data['estatus'] == 2) {
+        if ($estatus == 2) {
             // Si el estatus es 2 (activo), sumar la venta a ventasAcumuladas
             $sqlUpdate = "UPDATE competencias_equipo SET ventasAcumuladas = ventasAcumuladas + :monto, fechaActualizacion = NOW() 
                           WHERE idCompetencia = :competenciaId AND idEquipo = :equipoId AND activo = 1";
