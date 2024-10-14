@@ -14,22 +14,37 @@ function listVentasCompetencia() {
             throw new Exception("ID de competencia no proporcionado.");
         }
 
-        // Obtener las ventas acumuladas por equipo y usuario en la competencia seleccionada
-        $sql = "SELECT eu.id as idEquipoUsuario, e.nombreEquipo, u.nombreUsuario, v.monto, v.fechaVenta as fecha, v.estatus as estado
-                FROM competencias_equipos_usuarios_ventas v
-                JOIN equipo_usuarios eu ON v.idEquipoUsuario = eu.id
-                JOIN equipos e ON eu.idEquipo = e.idEquipo
-                JOIN usuarios u ON eu.idUsuario = u.idUsuario
-                WHERE v.idCompetencia = :competenciaId";
+        // Obtener la meta de ventas de la competencia
+        $sqlCompetencia = "SELECT nombreCompetencia, metaVentas FROM competencias WHERE idCompetencia = :competenciaId AND activo = 1";
+        $stmtCompetencia = $pdo->prepare($sqlCompetencia);
+        $stmtCompetencia->execute(['competenciaId' => $competenciaId]);
+        $competencia = $stmtCompetencia->fetch(PDO::FETCH_ASSOC);
+
+        if (!$competencia) {
+            throw new Exception("No se encontró la competencia.");
+        }
+
+        // Obtener las ventas acumuladas por equipo en la competencia seleccionada, incluyendo equipos sin ventas
+        $sql = "SELECT e.idEquipo, e.nombreEquipo, ce.ventasAcumuladas
+                FROM competencias_equipo ce
+                JOIN equipos e ON ce.idEquipo = e.idEquipo
+                WHERE ce.idCompetencia = :competenciaId AND ce.activo = 1";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['competenciaId' => $competenciaId]);
-        $ventas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $equipos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($ventas) {
+        // Agregar la información de metaVentas
+        if ($equipos) {
+            foreach ($equipos as &$equipo) {
+                $equipo['metaVentas'] = $competencia['metaVentas'];
+            }
             $response['status'] = true;
-            $response['data'] = $ventas;
+            $response['data'] = [
+                'competencia' => $competencia,
+                'equipos' => $equipos
+            ];
         } else {
-            $response['message'] = 'No se encontraron ventas para esta competencia.';
+            $response['message'] = 'No se encontraron equipos en esta competencia.';
         }
     } catch (Exception $e) {
         $response['message'] = 'Error: ' . $e->getMessage();
@@ -50,12 +65,14 @@ function detalleVentas() {
         if (!$equipoId) {
             throw new Exception("ID del equipo no proporcionado.");
         }
+        $response['equipoId'] = $equipoId;
 
-        // Obtener los detalles de las ventas de un equipo en específico
-        $sql = "SELECT ventas.idVenta, ventas.monto, ventas.fechaVenta as fecha, usuarios.nombreUsuario AS nombreVendedor, ventas.estatus as estado
-                FROM ventas
-                JOIN usuarios ON ventas.idUsuario = usuarios.idUsuario
-                WHERE ventas.idEquipo = :equipoId";
+
+        $sql = "SELECT ventas.idCompetenciaEquipoVenta, ventas.monto, ventas.fechaVenta as fecha, usuarios.nombreUsuario AS nombreVendedor, ventas.estatus as estado
+                FROM competencias_equipos_usuarios_ventas ventas
+                JOIN equipo_usuarios eu ON ventas.idEquipoUsuario = eu.id
+                JOIN usuarios ON eu.idUsuario = usuarios.idUsuario
+                WHERE eu.idEquipo = :equipoId AND ventas.activo = 1";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['equipoId' => $equipoId]);
         $ventas = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -65,6 +82,8 @@ function detalleVentas() {
             $response['data'] = $ventas;
         } else {
             $response['message'] = 'No se encontraron ventas para este equipo.';
+            $response['data'] = $ventas;
+
         }
     } catch (Exception $e) {
         $response['message'] = 'Error: ' . $e->getMessage();

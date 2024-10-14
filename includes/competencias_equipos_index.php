@@ -23,7 +23,9 @@
             </div>
         </div>
 
-        <div class="container mt-4 row" id="cards-container" >
+        <!-- Mostrar meta de ventas y equipos -->
+        <div class="container mt-4 row" id="meta-container"></div>
+        <div class="container mt-4 row" id="cards-container">
             <!-- Cards dinámicos generados aquí -->
         </div>
     </div>
@@ -104,7 +106,8 @@
         .then(response => response.json())
         .then(res => {
             if (res.status) {
-                mostrarVentasEnCards(res.data);
+                mostrarMetaVentas(res.data.competencia);
+                mostrarVentasEnCards(res.data.equipos);
             } else {
                 Swal.fire({
                     title: 'Error',
@@ -117,17 +120,30 @@
         .catch(error => console.error('Error:', error));
     }
 
+    function mostrarMetaVentas(competencia) {
+        const metaContainer = document.getElementById('meta-container');
+        metaContainer.innerHTML = `
+            <div class="col-12">
+                <h3>Meta de Ventas para ${competencia.nombreCompetencia}: ${competencia.metaVentas}</h3>
+            </div>
+        `;
+    }
+
     function mostrarVentasEnCards(equipos) {
         const cardsContainer = document.getElementById('cards-container');
         cardsContainer.innerHTML = ''; // Limpiar contenido previo
 
         equipos.forEach(equipo => {
+            const progress = (equipo.ventasAcumuladas / equipo.metaVentas) * 100;
             const card = `
                 <div class="col-md-4 col-12 col-lg-6">
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">Equipo: ${equipo.nombreEquipo}</h5>
-                            <p class="card-text">Ventas Totales: ${equipo.ventasTotales}</p>
+                            <p class="card-text">Ventas Totales: ${equipo.ventasAcumuladas}</p>
+                            <div class="progress mb-3">
+                                <div class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                             <button class="btn btn-info" onclick="verDetalleVentas(${equipo.idEquipo})">Ver Detalle de Ventas</button>
                         </div>
                     </div>
@@ -147,6 +163,7 @@
         })
         .then(response => response.json())
         .then(res => {
+            console.log(res);
             if (res.status) {
                 mostrarDetalleVentas(res.data);
                 $('#modalDetalleVentas').modal('show');
@@ -163,18 +180,41 @@
     }
 
     function mostrarDetalleVentas(ventas) {
-        const detalleBody = document.getElementById('detalleVentasBody');
-        detalleBody.innerHTML = ''; // Limpiar contenido previo
+    const detalleBody = document.getElementById('detalleVentasBody');
+    detalleBody.innerHTML = ''; // Limpiar contenido previo
 
-        ventas.forEach(venta => {
-            const row = `
-                <tr>
-                    <td>${venta.nombreVendedor}</td>
-                    <td>${venta.monto}</td>
-                    <td>${venta.estado}</td>
-                    <td>${venta.fecha}</td>
-                </tr>`;
-            detalleBody.insertAdjacentHTML('beforeend', row);
-        });
-    }
+    ventas.forEach(venta => {
+        let badgeColor = '';
+        let badgeText = '';
+
+        switch (venta.estado) {
+            case 1:
+                badgeColor = 'badge-warning'; // Estado en "Stand by"
+                badgeText = 'Stand by';
+                break;
+            case 2:
+                badgeColor = 'badge-success'; // Estado "Activo"
+                badgeText = 'Activo';
+                break;
+            case -2:
+                badgeColor = 'badge-danger'; // Estado "Cancelado"
+                badgeText = 'Cancelado';
+                break;
+            default:
+                badgeColor = 'badge-secondary'; // Estado "Desconocido"
+                badgeText = 'Desconocido';
+                break;
+        }
+
+        const row = `
+            <tr>
+                <td>${venta.nombreVendedor}</td>
+                <td>${venta.monto}</td>
+                <td><span class="badge ${badgeColor}">${badgeText}</span></td>
+                <td>${venta.fecha}</td>
+            </tr>`;
+        detalleBody.insertAdjacentHTML('beforeend', row);
+    });
+}
+
 </script>

@@ -62,6 +62,7 @@
                     <table id="tabla-usuario-equipo" class="table">
                         <thead>
                             <tr>
+                                <th>Folio</th>
                                 <th>ID Usuario</th>
                                 <th>Nombre Usuario</th>
                                 <th>Nombre Equipo</th>
@@ -91,6 +92,8 @@
                     <table id="tabla-equipo-competencia" class="table">
                         <thead>
                             <tr>
+                                <th>Folio</th>
+
                                 <th>Nombre Equipo</th>
                                 <th>Nombre Competencia</th>
                                 <th>Acciones</th>
@@ -117,6 +120,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="formulario-editar-usuario-equipo">
+                        <input type="hidden" id="editarUsuarioIdFolio">
                         <input type="hidden" id="editarUsuarioId">
                         <input type="hidden" id="editarEquipoId">
                         <div class="form-group">
@@ -149,6 +153,8 @@
                 </div>
                 <div class="modal-body">
                     <form id="formulario-editar-equipo-competencia">
+                       <input type="hidden" id="editarEquipoCompIdFolio">
+
                         <input type="hidden" id="editarEquipoCompId">
                         <input type="hidden" id="editarCompetenciaId">
                         <div class="form-group">
@@ -185,7 +191,7 @@
         fetch(api)
             .then(response => response.json())
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 let usuariosCrudo = res.data ?? [];
                 let usuarios = usuariosCrudo.filter(usuario => usuario.tipo === 'vendedor');
 
@@ -338,11 +344,12 @@
                 tableBody.innerHTML = '';
                 asociaciones.forEach(asociacion => {
                     const row = `<tr>
+                        <td>${asociacion.id}</td>
                         <td>${asociacion.idUsuario}</td>
                         <td>${asociacion.nombreUsuario}</td>
                         <td>${asociacion.nombreEquipo}</td>
                         <td>
-                            <button class="btn btn-warning btn-sm" onclick="editarAsociacionUsuarioEquipo(${asociacion.idUsuario}, ${asociacion.idEquipo})">Editar</button>
+                            <button class="btn btn-warning btn-sm" onclick="editarAsociacionUsuarioEquipo(${asociacion.id},${asociacion.idUsuario}, ${asociacion.idEquipo})">Editar</button>
                         </td>
                     </tr>`;
                     tableBody.insertAdjacentHTML('beforeend', row);
@@ -361,10 +368,11 @@
                 tableBody.innerHTML = '';
                 asociaciones.forEach(asociacion => {
                     const row = `<tr>
+                        <td>${asociacion.id}</td>
                         <td>${asociacion.nombreEquipo}</td>
                         <td>${asociacion.nombreCompetencia}</td>
                         <td>
-                            <button class="btn btn-warning btn-sm" onclick="editarAsociacionEquipoCompetencia(${asociacion.idEquipo}, ${asociacion.idCompetencia})">Editar</button>
+                            <button class="btn btn-warning btn-sm" onclick="editarAsociacionEquipoCompetencia(${asociacion.id},${asociacion.idEquipo}, ${asociacion.idCompetencia})">Editar</button>
                         </td>
                     </tr>`;
                     tableBody.insertAdjacentHTML('beforeend', row);
@@ -372,21 +380,23 @@
             });
     }
 
-    function editarAsociacionUsuarioEquipo(idUsuario, idEquipo) {
+    function editarAsociacionUsuarioEquipo(folio,idUsuario, idEquipo) {
+        document.getElementById('editarUsuarioIdFolio').value = folio;
         document.getElementById('editarUsuarioId').value = idUsuario;
         document.getElementById('editarEquipoId').value = idEquipo;
         $('#editarUsuarioEquipoModal').modal('show');
     }
 
     function guardarCambiosUsuarioEquipo() {
+        const folio = document.getElementById('editarUsuarioIdFolio').value;
         const usuarioId = document.getElementById('editarUsuarioId').value;
         const equipoId = document.getElementById('editarEquipoId').value;
         const nuevoUsuarioId = document.getElementById('nuevoUsuarioId').value;
         const nuevoEquipoId = document.getElementById('nuevoEquipoId').value;
 
         let api = "<?php echo BASE_URL_PROJECT.'app/api/v1/asociaciones/?action=editarUsuarioEquipo'; ?>";
-        let dataJson = JSON.stringify({ usuarioId: usuarioId, equipoId: equipoId, nuevoUsuarioId: nuevoUsuarioId, nuevoEquipoId: nuevoEquipoId });
-
+        let dataJson = JSON.stringify({ folio: folio, usuarioId: usuarioId, equipoId: equipoId, nuevoUsuarioId: nuevoUsuarioId, nuevoEquipoId: nuevoEquipoId });
+        console.log(folio);
         fetch(api, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -394,6 +404,7 @@
         })
         .then(response => response.json())
         .then(res => {
+            console.log(res);
             if (res.status) {
                 Swal.fire({
                     title: 'Éxito',
@@ -415,21 +426,24 @@
         .catch(error => console.error('Error:', error));
     }
 
-    function editarAsociacionEquipoCompetencia(idEquipo, idCompetencia) {
+    function editarAsociacionEquipoCompetencia(folio,idEquipo, idCompetencia) {
+        // console.log(idEquipo);
+        document.getElementById('editarEquipoCompIdFolio').value = folio;
         document.getElementById('editarEquipoCompId').value = idEquipo;
         document.getElementById('editarCompetenciaId').value = idCompetencia;
         $('#editarEquipoCompetenciaModal').modal('show');
     }
 
     function guardarCambiosEquipoCompetencia() {
+        const folio = document.getElementById('editarEquipoCompIdFolio').value;
         const equipoId = document.getElementById('editarEquipoCompId').value;
         const competenciaId = document.getElementById('editarCompetenciaId').value;
         const nuevoEquipoId = document.getElementById('nuevoEquipoCompId').value;
         const nuevoCompetenciaId = document.getElementById('nuevoCompetenciaId').value;
 
         let api = "<?php echo BASE_URL_PROJECT.'app/api/v1/asociaciones/?action=editarEquipoCompetencia'; ?>";
-        let dataJson = JSON.stringify({ equipoId: equipoId, competenciaId: competenciaId, nuevoEquipoId: nuevoEquipoId, nuevoCompetenciaId: nuevoCompetenciaId });
-
+        let dataJson = JSON.stringify({ folio: folio, equipoId: equipoId, competenciaId: competenciaId, nuevoEquipoId: nuevoEquipoId, nuevoCompetenciaId: nuevoCompetenciaId });
+        console.log(folio);
         fetch(api, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -437,6 +451,7 @@
         })
         .then(response => response.json())
         .then(res => {
+            console.log(res);
             if (res.status) {
                 Swal.fire({
                     title: 'Éxito',

@@ -26,6 +26,31 @@
                         <a href="locations">Nuestra presencia en el mundo
                         </a>
                     </li>
+                    <li class="">
+                        <a href="pages/competencias-equipos">Competencias equipos
+                        </a>
+                    </li>
+
+                    <?php if (isset($_SESSION['tipo'])): ?>
+                        <?php if ($_SESSION['tipo'] == 'admin'): ?>
+                            <li class="">
+                                <a href="pages/competencias/">Comptencias</a>
+                            </li>
+                            <li class="">
+                                <a href="pages/equipos/">Equipos</a>
+                            </li>
+                            <li class="">
+                                <a href="pages/asociaciones/">Asociaciones</a>
+                            </li>
+                            <li class="">
+                                <a href="pages/usuarios/">Usuarios</a>
+                            </li>
+                        <?php elseif ($_SESSION['tipo'] == 'vendedor'): ?>
+                            <li class="">
+                                <a href="ventas">Mis ventas</a>
+                            </li>
+                        <?php endif; ?>
+                    <?php endif; ?>
                 </ul>
             </li>
         </ul>

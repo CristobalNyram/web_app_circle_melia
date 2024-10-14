@@ -88,7 +88,7 @@ function listarAsociacionesUsuarioEquipo() {
     $response = ['status' => false, 'message' => '', 'data' => []];
 
     try {
-        $sql = "SELECT u.idUsuario, u.nombreUsuario, e.idEquipo, e.nombreEquipo 
+        $sql = "SELECT eu.id, u.idUsuario, u.nombreUsuario, e.idEquipo, e.nombreEquipo 
                 FROM equipo_usuarios eu 
                 INNER JOIN usuarios u ON u.activo = 1 AND eu.idUsuario = u.idUsuario
                 INNER JOIN equipos e ON e.activo = 1 AND eu.idEquipo = e.idEquipo
@@ -112,7 +112,7 @@ function listarAsociacionesEquipoCompetencia() {
     $response = ['status' => false, 'message' => '', 'data' => []];
 
     try {
-        $sql = "SELECT e.idEquipo, e.nombreEquipo, c.idCompetencia, c.nombreCompetencia 
+        $sql = "SELECT ce.id, e.idEquipo, e.nombreEquipo, c.idCompetencia, c.nombreCompetencia 
                 FROM competencias_equipo ce 
                 INNER JOIN equipos e ON e.activo = 1 AND ce.idEquipo = e.idEquipo
                 INNER JOIN competencias c ON c.activo = 1 AND ce.idCompetencia = c.idCompetencia
@@ -134,28 +134,43 @@ function listarAsociacionesEquipoCompetencia() {
 function editarUsuarioEquipo() {
     global $pdo;
     $response = ['status' => false, 'message' => ''];
-
     $data = json_decode(file_get_contents("php://input"), true);
 
     try {
+        $folio = intval($data['folio']) ?? null;
         $usuarioId = $data['usuarioId'] ?? null;
         $equipoId = $data['equipoId'] ?? null;
         $nuevoUsuarioId = $data['nuevoUsuarioId'] ?? null;
         $nuevoEquipoId = $data['nuevoEquipoId'] ?? null;
 
-        if (!$usuarioId || !$equipoId || !$nuevoUsuarioId || !$nuevoEquipoId) {
+        if (!$usuarioId || !$equipoId || !$nuevoUsuarioId || !$nuevoEquipoId || !$folio) {
             throw new Exception("Datos incompletos para editar la asociación.");
+        }
+
+        // Verificar si el nuevo usuario ya está asociado al equipo
+        $sqlCheck = "SELECT * FROM equipo_usuarios WHERE idUsuario = :nuevoUsuarioId AND idEquipo = :nuevoEquipoId AND activo = 1";
+        $stmtCheck = $pdo->prepare($sqlCheck);
+        $stmtCheck->execute([
+            'nuevoUsuarioId' => $nuevoUsuarioId,
+            'nuevoEquipoId' => $nuevoEquipoId
+        ]);
+
+        $existing = $stmtCheck->fetch(PDO::FETCH_ASSOC);
+
+        if ($existing) {
+            throw new Exception("El usuario ya está asociado a este equipo.");
         }
 
         // Actualizar la relación en la tabla equipo_usuarios
         $sql = "UPDATE equipo_usuarios SET idUsuario = :nuevoUsuarioId, idEquipo = :nuevoEquipoId 
-                WHERE idUsuario = :usuarioId AND idEquipo = :equipoId AND activo = 1";
+                WHERE idUsuario = :usuarioId AND idEquipo = :equipoId AND id = :id AND activo = 1";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             'nuevoUsuarioId' => $nuevoUsuarioId,
             'nuevoEquipoId' => $nuevoEquipoId,
             'usuarioId' => $usuarioId,
-            'equipoId' => $equipoId
+            'equipoId' => $equipoId,
+            'id' => $folio
         ]);
 
         $response['status'] = true;
@@ -175,23 +190,39 @@ function editarEquipoCompetencia() {
     $data = json_decode(file_get_contents("php://input"), true);
 
     try {
+        $folio = $data['folio'] ?? null;
         $equipoId = $data['equipoId'] ?? null;
         $competenciaId = $data['competenciaId'] ?? null;
         $nuevoEquipoId = $data['nuevoEquipoId'] ?? null;
         $nuevoCompetenciaId = $data['nuevoCompetenciaId'] ?? null;
 
-        if (!$equipoId || !$competenciaId || !$nuevoEquipoId || !$nuevoCompetenciaId) {
+        if (!$equipoId || !$competenciaId || !$nuevoEquipoId || !$nuevoCompetenciaId || !$folio) {
             throw new Exception("Datos incompletos para editar la asociación.");
+        }
+
+        // Verificar si el nuevo equipo ya está asociado a la nueva competencia
+        $sqlCheck = "SELECT * FROM competencias_equipo WHERE idEquipo = :nuevoEquipoId AND idCompetencia = :nuevoCompetenciaId AND activo = 1";
+        $stmtCheck = $pdo->prepare($sqlCheck);
+        $stmtCheck->execute([
+            'nuevoEquipoId' => $nuevoEquipoId,
+            'nuevoCompetenciaId' => $nuevoCompetenciaId
+        ]);
+
+        $existing = $stmtCheck->fetch(PDO::FETCH_ASSOC);
+
+        if ($existing) {
+            throw new Exception("El equipo ya está asociado a esta competencia.");
         }
 
         // Actualizar la relación en la tabla competencias_equipo
         $sql = "UPDATE competencias_equipo SET idEquipo = :nuevoEquipoId, idCompetencia = :nuevoCompetenciaId 
-                WHERE idEquipo = :equipoId AND idCompetencia = :competenciaId AND activo = 1";
+                WHERE idEquipo = :equipoId AND idCompetencia = :competenciaId AND id = :folio AND activo = 1";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             'nuevoEquipoId' => $nuevoEquipoId,
             'nuevoCompetenciaId' => $nuevoCompetenciaId,
             'equipoId' => $equipoId,
+            'folio' => $folio,
             'competenciaId' => $competenciaId
         ]);
 
@@ -203,3 +234,4 @@ function editarEquipoCompetencia() {
 
     return $response;
 }
+
