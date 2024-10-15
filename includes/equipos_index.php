@@ -119,9 +119,9 @@
 
         if (nombreEquipo.length > 100) {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'El nombre del equipo no puede tener más de 100 caracteres',
-                icon: 'error',
+                icon: 'warning',
                 confirmButtonText: 'OK'
             });
             return;
@@ -129,9 +129,9 @@
 
         if (passwordEquipo === "") {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'Debe ingresar un password para el equipo',
-                icon: 'error',
+                icon: 'warning',
                 confirmButtonText: 'OK'
             });
             return;
@@ -160,9 +160,9 @@
                     });
                 } else {
                     Swal.fire({
-                        title: 'Error',
+                        title: 'Aviso',
                         text: res.message,
-                        icon: 'error',
+                        icon: 'warning',
                         confirmButtonText: 'OK'
                     });
                 }
@@ -172,9 +172,9 @@
             .catch(error => {
                 console.error('Error:', error);
                 Swal.fire({
-                    title: 'Error',
+                    title: 'Aviso',
                     text: 'Hubo un error al guardar el equipo',
-                    icon: 'error',
+                    icon: 'warning',
                     confirmButtonText: 'OK'
                 });
             });
@@ -222,9 +222,9 @@
                             cargarEquipos();
                         } else {
                             Swal.fire({
-                                title: 'Error',
+                                title: 'Aviso',
                                 text: res.message || 'No se pudo eliminar el equipo',
-                                icon: 'error',
+                                icon: 'warning',
                                 confirmButtonText: 'OK'
                             });
                         }
@@ -232,9 +232,9 @@
                     .catch(error => {
                         console.error('Error:', error);
                         Swal.fire({
-                            title: 'Error',
+                            title: 'Aviso',
                             text: 'Hubo un error al eliminar el equipo',
-                            icon: 'error',
+                            icon: 'warning',
                             confirmButtonText: 'OK'
                         });
                     });

@@ -17,7 +17,7 @@
                         <a href="moneda">Cálculo de inflación</a>
                     </li>
                     <li class="">
-                        <a href="presupuesto">Travel Tool Proyection</a>
+                        <a href="travel-tool-projection">Travel Tool Projection</a>
                     </li>
                     <li class="">
                         <a href="no-brainer">No brainer</a>
@@ -27,7 +27,7 @@
                         </a>
                     </li>
                     <li class="">
-                        <a href="pages/competencias-equipos">Competencias equipos
+                        <a href="pages/competencias-equipos">Memberst Fest Ranking
                         </a>
                     </li>
                     <?php if (!isset($_SESSION['tipo'])): ?>

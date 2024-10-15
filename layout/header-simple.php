@@ -7,12 +7,16 @@
 if (!defined('ROOT_PATH_ASSETS')) {
     define('ROOT_PATH_ASSETS', '../'); // Default path if ROOT_PATH is not defined
 }
+if (!isset($titlePage)) {
+    $titlePage = "Melia - App's"; // Definir la variable si no está definida
+}
+
 ?>
 
     <base href="<?php echo ROOT_PATH_ASSETS; ?>">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Melia - App's</title>
+    <title><?php echo $titlePage; ?></title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="assets/images/logo/favicon.png">

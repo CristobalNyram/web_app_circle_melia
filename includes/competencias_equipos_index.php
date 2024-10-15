@@ -1,5 +1,7 @@
 <div class="page-container">
+
     <div class="main-content">
+        
         <div class="page-header">
             <h2 class="header-title">Ventas por Competencia, Equipo y Usuario</h2>
             <div class="header-sub-title">
@@ -10,9 +12,14 @@
                 </nav>
             </div>
         </div>
+        <div class="row d-flex justify-content-center align-content-center mb-1">
+        <img src="assets/images/resources/logoMembersFest.png" alt="Logo" class="logo-header mr-3" style="width: 200px; height: auto;"> <!-- Ajusta el tamaño según sea necesario -->
+
+        </div>
+
         <div class="card">
             <div class="card-body">
-                <h4>Seleccionar Competencia</h4>
+                <h4 hidden>Seleccionar Competencia</h4>
                 <form id="formulario-competencia">
                     <div class="form-group">
                         <label for="competenciaId">Seleccionar Competencia</label>
@@ -62,12 +69,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         cargarCompetencias(); // Cargar las competencias disponibles en el select
     });
 
     function cargarCompetencias() {
-        let api = "<?php echo BASE_URL_PROJECT.'app/api/v1/competencias/?action=list'; ?>";
+        let api = "<?php echo BASE_URL_PROJECT . 'app/api/v1/competencias/?action=list'; ?>";
         fetch(api)
             .then(response => response.json())
             .then(res => {
@@ -87,44 +94,50 @@
 
         if (!competenciaId) {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'Debe seleccionar una competencia',
-                icon: 'error',
+                icon: 'warning',
                 confirmButtonText: 'OK'
             });
             return;
         }
 
-        let api = "<?php echo BASE_URL_PROJECT.'app/api/v1/ventas/?action=listVentasCompetencia'; ?>";
-        let dataJson = JSON.stringify({ competenciaId: competenciaId });
+        let api = "<?php echo BASE_URL_PROJECT . 'app/api/v1/ventas/?action=listVentasCompetencia'; ?>";
+        let dataJson = JSON.stringify({
+            competenciaId: competenciaId
+        });
 
         fetch(api, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: dataJson
-        })
-        .then(response => response.json())
-        .then(res => {
-            if (res.status) {
-                mostrarMetaVentas(res.data.competencia);
-                mostrarVentasEnCards(res.data.equipos);
-            } else {
-                Swal.fire({
-                    title: 'Error',
-                    text: res.message,
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-            }
-        })
-        .catch(error => console.error('Error:', error));
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: dataJson
+            })
+            .then(response => response.json())
+            .then(res => {
+                if (res.status) {
+                    mostrarMetaVentas(res.data.competencia);
+                    mostrarVentasEnCards(res.data.equipos);
+                } else {
+                    Swal.fire({
+                        title: 'Aviso',
+                        text: res.message,
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => console.error('Error:', error));
     }
 
     function mostrarMetaVentas(competencia) {
         const metaContainer = document.getElementById('meta-container');
         metaContainer.innerHTML = `
             <div class="col-12">
-                <h3>Meta de Ventas para ${competencia.nombreCompetencia}: $ ${competencia.metaVentas}</h3>
+                <h3  >${competencia.nombreCompetencia}</h3>
+
+                <h3 hidden >Meta de Ventas para ${competencia.nombreCompetencia}: $ ${Number(competencia.metaVentas).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
             </div>
         `;
     }
@@ -132,62 +145,101 @@
     function mostrarVentasEnCards(equipos) {
         const cardsContainer = document.getElementById('cards-container');
         cardsContainer.innerHTML = ''; // Limpiar contenido previo
-
         equipos.forEach(equipo => {
-            const progress = (equipo.ventasAcumuladas / equipo.metaVentas) * 100;
-            let progressBarClass = '';
+            const metasAlcanzadas = Math.floor(equipo.ventasAcumuladas / equipo.metaVentas); // Número de metas completadas
+            const progresoFinal = (equipo.ventasAcumuladas % equipo.metaVentas) / equipo.metaVentas * 100; // Progreso en la última meta parcial
+            let barrasProgreso = '';
 
-            // Asignar clase de Bootstrap según el progreso
-            if (progress < 50) {
-                progressBarClass = 'bg-danger'; // Rojo
-            } else if (progress >= 50 && progress < 80) {
-                progressBarClass = 'bg-warning'; // Naranja
-            } else {
-                progressBarClass = 'bg-success'; // Verde
+            // Función para determinar la clase de la barra según el progreso
+            const obtenerClaseProgreso = (porcentaje) => {
+                if (porcentaje < 50) {
+                    return 'bg-danger'; // Rojo
+                } else if (porcentaje >= 50 && porcentaje < 80) {
+                    return 'bg-warning'; // Naranja
+                } else {
+                    return 'bg-success'; // Verde
+                }
+            };
+
+            // Crear una barra para cada meta completa alcanzada
+            for (let i = 0; i < metasAlcanzadas; i++) {
+                barrasProgreso += `
+            <div class="progress mb-2">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>`;
             }
 
+            // Crear la barra final con el progreso parcial (si hay)
+            if (progresoFinal > 0 || metasAlcanzadas === 0) {
+                const progressBarClass = obtenerClaseProgreso(progresoFinal);
+                barrasProgreso += `
+            <div class="progress mb-2">
+                <div class="progress-bar ${progressBarClass}" role="progressbar" style="width: ${progresoFinal}%;" aria-valuenow="${progresoFinal}" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>`;
+            }
+
+            // Mensaje de cuántas metas alcanzadas
+            const mensajeMetas = metasAlcanzadas > 0 ? `<small hidden class="text-success">¡Meta alcanzada ${metasAlcanzadas} ${metasAlcanzadas > 1 ? 'veces' : 'vez'}!</small>` : '';
+
+            // Crear la tarjeta con la estructura requerida y botón siempre alineado al lado derecho
             const card = `
-                <div class="col-md-4 col-12 col-lg-6">
+                <div class="col-12"> <!-- Ajuste para que ocupe todo el ancho en todos los tamaños de pantalla -->
                     <div class="card mb-3">
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column">
                             <h5 class="card-title">Equipo: ${equipo.nombreEquipo}</h5>
-                            <p class="card-text">Ventas Totales:$${equipo.ventasAcumuladas}</p>
-                            <div class="progress mb-3">
-                                <div class="progress-bar ${progressBarClass}" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
+                            <p class="card-text" hidden>
+                                Ventas Totales: $${Number(equipo.ventasAcumuladas).toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})} 
+                                (Meta: $${Number(equipo.metaVentas).toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})})
+                            </p>
+
+                            <p class="card-text" >
+                                Ventas Totales: $${Number(equipo.ventasAcumuladas).toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})} 
+                            </p>
+                            ${barrasProgreso}
+                            ${mensajeMetas}
+                            <div class="mt-auto text-end"> <!-- Botón alineado al final y a la derecha -->
+                                <button class="btn btn-info" onclick="verDetalleVentas(${equipo.idEquipo})">Ver Detalle de Ventas</button>
                             </div>
-                            <button class="btn btn-info" onclick="verDetalleVentas(${equipo.idEquipo})">Ver Detalle de Ventas</button>
                         </div>
                     </div>
                 </div>`;
+
+
             cardsContainer.insertAdjacentHTML('beforeend', card);
         });
+
+
     }
 
     function verDetalleVentas(equipoId) {
-        let api = "<?php echo BASE_URL_PROJECT.'app/api/v1/ventas/?action=detalleVentas'; ?>";
-        let dataJson = JSON.stringify({ equipoId: equipoId, });
+        let api = "<?php echo BASE_URL_PROJECT . 'app/api/v1/ventas/?action=detalleVentas'; ?>";
+        let dataJson = JSON.stringify({
+            equipoId: equipoId,
+        });
         console.log(dataJson);
         fetch(api, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: dataJson
-        })
-        .then(response => response.json())
-        .then(res => {
-            console.log(res);
-            if (res.status) {
-                mostrarDetalleVentas(res.data);
-                $('#modalDetalleVentas').modal('show');
-            } else {
-                Swal.fire({
-                    title: 'Error',
-                    text: res.message,
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-            }
-        })
-        .catch(error => console.error('Error:', error));
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: dataJson
+            })
+            .then(response => response.json())
+            .then(res => {
+                console.log(res);
+                if (res.status) {
+                    mostrarDetalleVentas(res.data);
+                    $('#modalDetalleVentas').modal('show');
+                } else {
+                    Swal.fire({
+                        title: 'Aviso',
+                        text: res.message,
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => console.error('Error:', error));
     }
 
     function mostrarDetalleVentas(ventas) {
@@ -220,7 +272,7 @@
             const row = `
                 <tr>
                     <td>${venta.nombreVendedor}</td>
-                    <td>${venta.monto}</td>
+                    <td>${Number(venta.monto).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td><span class="badge ${badgeColor}">${badgeText}</span></td>
                     <td>${venta.fecha}</td>
                 </tr>`;

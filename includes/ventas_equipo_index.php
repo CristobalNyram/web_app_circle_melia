@@ -41,8 +41,13 @@
                             </div>
                             <div class="form-group">
                                 <label for="montoVentaAgregar">Monto de la Venta</label>
-                                <input type="number" class="form-control" id="montoVentaAgregar" required>
+                                <input type="number" class="form-control" id="montoVentaAgregar" required oninput="formatearMonto('montoVentaAgregar','montoFormateadoAgregar')">
                             </div>
+                            <div class="form-group" hidden>
+                                <label for="montoFormateado">Monto Formateado</label>
+                                <input type="text" class="form-control" id="montoFormateadoAgregar" readonly>
+                            </div>
+
                             <div class="form-group">
                                 <label for="estatusAgregar">Estado</label>
                                 <select class="form-control" id="estatusAgregar" required>
@@ -80,8 +85,12 @@
                                 <select class="form-control" id="integranteEditar" required></select>
                             </div>
                             <div class="form-group">
-                                <label for="montoVentaEditar">Monto de la Venta</label>
-                                <input type="number" class="form-control" id="montoVentaEditar" required>
+                            <label for="montoVentaEditar">Monto de la Venta</label>
+                            <input type="number" class="form-control" id="montoVentaEditar" required oninput="formatearMonto('montoVentaEditar', 'montoFormateadoEditar')">
+                            </div>
+                            <div class="form-group" hidden>
+                                <label for="montoFormateadoEditar">Monto Formateado</label>
+                                <input type="text" class="form-control" id="montoFormateadoEditar" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="estatusEditar">Estado</label>
@@ -149,7 +158,14 @@
     document.addEventListener('DOMContentLoaded', function() {
         cargarCompetenciasEquipo();
     });
+    function formatearMonto(montoId, formateadoId) {
+        const montoInput = document.getElementById(montoId);
+        const montoFormateadoInput = document.getElementById(formateadoId);
+        const monto = Number(montoInput.value);
 
+        // Formatea el valor ingresado con separadores de miles y dos decimales
+        montoFormateadoInput.value = monto.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
     let currentCompetenciaId = null;
 
     function cargarCompetenciasEquipo() {
@@ -171,12 +187,13 @@
                     mostrarCompetencias(res.data);
                     cargarIntegrantesEquipo();
                 } else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: res.message,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
+                    // Swal.fire({
+                    //     title: 'Aviso',
+                    //     text: res.message,
+                    //     icon: 'warning',
+                    //     confirmButtonText: 'OK'
+                    // });
+                    console.error(res);
                 }
             })
             .catch(error => console.error(error));
@@ -192,7 +209,7 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">${competencia.nombreCompetencia}</h5>
-                            <p class="card-text">Meta de Ventas: ${competencia.metaVentas}</p>
+                                <p hidden class="card-text">Meta de Ventas: $ ${Number(competencia.metaVentas).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                             <button class="btn btn-info" onclick="gestionarVentasCompetencia(${competencia.idCompetencia})">Gestionar Ventas</button>
                         </div>
                     </div>
@@ -259,12 +276,13 @@
                 if (res.status) {
                     mostrarDetalleVentas(res.data);
                 } else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: res.message,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
+                    // Swal.fire({
+                    //     title: 'Aviso',
+                    //     text: res.message,
+                    //     icon: 'warning',
+                    //     confirmButtonText: 'OK'
+                    // });
+                    console.error(res);
                 }
             })
             .catch(error => console.error(error));
@@ -278,7 +296,7 @@
                 <tr>
                     <td>${venta.folio}</td>
                     <td>${venta.nombreVendedor}</td>
-                    <td>${venta.monto}</td>
+                    <td>${Number(venta.monto).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td><span class="badge badge-${getEstadoClass(venta.estado)}">${getEstadoTexto(venta.estado)}</span></td>
                     <td>${venta.fechaVenta}</td>
                     <td>
@@ -297,6 +315,7 @@
             // Asignar los valores al formulario
             document.getElementById('ventaIdEditar').value = idVenta;
             document.getElementById('montoVentaEditar').value = monto;
+            formatearMonto('montoVentaEditar', 'montoFormateadoEditar')
             document.getElementById('fechaVentaEditar').value = fecha;
             document.getElementById('estatusEditar').value = estado;
             document.getElementById('integranteEditar').value = idIntegrante;
@@ -329,9 +348,9 @@
 
         if (!montoVenta || !fechaVenta || !estatus || !idIntegrante) {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'Todos los campos son obligatorios',
-                icon: 'error',
+                icon: 'warning',
                 confirmButtonText: 'OK'
             });
             return;
@@ -368,9 +387,9 @@
                     cargarVentasCompetencia(currentCompetenciaId);
                 } else {
                     Swal.fire({
-                        title: 'Error',
+                        title: 'Aviso',
                         text: res.message,
-                        icon: 'error',
+                        icon: 'warning',
                         confirmButtonText: 'OK'
                     });
                 }
@@ -387,9 +406,9 @@
 
         if (!montoVenta || !fechaVenta || !estatus || !idIntegrante || !idVenta) {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'Todos los campos son obligatorios',
-                icon: 'error',
+                icon: 'warning',
                 confirmButtonText: 'OK'
             });
             return;
@@ -427,9 +446,9 @@
                     cargarVentasCompetencia(currentCompetenciaId);
                 } else {
                     Swal.fire({
-                        title: 'Error',
+                        title: 'Aviso',
                         text: res.message,
-                        icon: 'error',
+                        icon: 'warning',
                         confirmButtonText: 'OK'
                     });
                 }

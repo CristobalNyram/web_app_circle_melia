@@ -1,5 +1,6 @@
 <?php
 session_start();
+$titlePage='Memberst Fest Ranking';
 define('ROOT_PATH','../../');
 define('ROOT_PATH_ASSETS','../../');
 include(ROOT_PATH . 'app/config/env.php');

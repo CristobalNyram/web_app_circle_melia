@@ -253,9 +253,9 @@
 
         if (!usuarioId || !equipoId) {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'Debe seleccionar un usuario y un equipo',
-                icon: 'error',
+                icon: 'warning',
                 confirmButtonText: 'OK'
             });
             return;
@@ -280,9 +280,9 @@
                 });
             } else {
                 Swal.fire({
-                    title: 'Error',
+                    title: 'Aviso',
                     text: res.message,
-                    icon: 'error',
+                    icon: 'warning',
                     confirmButtonText: 'OK'
                 });
             }
@@ -296,9 +296,9 @@
 
         if (!equipoId || !competenciaId) {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'Debe seleccionar un equipo y una competencia',
-                icon: 'error',
+                icon: 'warning',
                 confirmButtonText: 'OK'
             });
             return;
@@ -323,9 +323,9 @@
                 });
             } else {
                 Swal.fire({
-                    title: 'Error',
+                    title: 'Aviso',
                     text: res.message,
-                    icon: 'error',
+                    icon: 'warning',
                     confirmButtonText: 'OK'
                 });
             }
@@ -416,9 +416,9 @@
                 cargarAsociacionesUsuarioEquipo();
             } else {
                 Swal.fire({
-                    title: 'Error',
+                    title: 'Aviso',
                     text: res.message,
-                    icon: 'error',
+                    icon: 'warning',
                     confirmButtonText: 'OK'
                 });
             }
@@ -463,9 +463,9 @@
                 cargarAsociacionesEquipoCompetencia();
             } else {
                 Swal.fire({
-                    title: 'Error',
+                    title: 'Aviso',
                     text: res.message,
-                    icon: 'error',
+                    icon: 'warning',
                     confirmButtonText: 'OK'
                 });
             }

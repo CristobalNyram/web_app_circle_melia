@@ -105,7 +105,10 @@
                     const row = `<tr>
                         <td>${competencia.idCompetencia}</td>
                         <td>${competencia.nombreCompetencia}</td>
-                        <td>${competencia.metaVentas}</td>
+                        <td> 
+                        ${Number(competencia.metaVentas).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+
+                        </td>
                         <td>${competencia.fechaInicio}</td>
                         <td>${competencia.fechaFin}</td>
                         <td>
@@ -133,9 +136,9 @@
 
         if (nombreCompetencia.length > 100) {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'El nombre de la competencia no puede tener más de 100 caracteres',
-                icon: 'error',
+                icon: 'warning',
                 confirmButtonText: 'OK'
             });
             return;
@@ -143,9 +146,9 @@
 
         if (!fechaInicio || !fechaFin) {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'Debe ingresar una fecha de inicio y una fecha de fin',
-                icon: 'error',
+                icon: 'warning',
                 confirmButtonText: 'OK'
             });
             return;
@@ -174,9 +177,9 @@
                     });
                 } else {
                     Swal.fire({
-                        title: 'Error',
+                        title: 'Aviso',
                         text: res.message,
-                        icon: 'error',
+                        icon: 'warning',
                         confirmButtonText: 'OK'
                     });
                 }
@@ -186,9 +189,9 @@
             .catch(error => {
                 console.error('Error:', error);
                 Swal.fire({
-                    title: 'Error',
+                    title: 'Aviso',
                     text: 'Hubo un error al guardar la competencia',
-                    icon: 'error',
+                    icon: 'warning',
                     confirmButtonText: 'OK'
                 });
             });
@@ -238,9 +241,9 @@
                             cargarCompetencias();
                         } else {
                             Swal.fire({
-                                title: 'Error',
+                                title: 'Aviso',
                                 text: res.message || 'No se pudo eliminar la competencia',
-                                icon: 'error',
+                                icon: 'warning',
                                 confirmButtonText: 'OK'
                             });
                         }
@@ -248,9 +251,9 @@
                     .catch(error => {
                         console.error('Error:', error);
                         Swal.fire({
-                            title: 'Error',
+                            title: 'Aviso',
                             text: 'Hubo un error al eliminar la competencia',
-                            icon: 'error',
+                            icon: 'warning',
                             confirmButtonText: 'OK'
                         });
                     });

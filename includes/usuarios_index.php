@@ -55,21 +55,23 @@
                             <input type="text" class="form-control" id="nombreUsuario" maxlength="55" required>
                         </div>
                         <div class="form-group">
-                            <label for="nickname">Nickname</label>
-                            <input type="text" class="form-control" id="nickname" maxlength="50" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contrasenia">Contraseña</label>
-                            <input type="text" class="form-control" id="contrasenia" maxlength="100" required>
-                        </div>
-                        <div class="form-group">
                             <label for="tipoUsuario">Tipo de Usuario</label>
-                            <select class="form-control" id="tipoUsuario" required>
+                            <select class="form-control" id="tipoUsuario"  onchange="toggleFieldsTypeUser()" required>
+
                                 <option value="">Seleccionar tipo</option>
                                 <option value="admin">Administrador</option>
                                 <option value="vendedor">Vendedor</option>
                             </select>
                         </div>
+                        <div class="form-group" id="nicknameGroup" style="display:none;">
+                            <label for="nickname">Nickname</label>
+                            <input type="text" class="form-control" id="nickname" maxlength="50" required>
+                        </div>
+                        <div class="form-group" id="contraseniaGroup" style="display:none;">
+                            <label for="contrasenia">Contraseña</label>
+                            <input type="text" class="form-control" id="contrasenia" maxlength="100" required>
+                        </div>
+                       
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -87,6 +89,31 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+    function toggleFieldsTypeUser() {
+        console.log('2');
+        const tipoUsuario = document.getElementById('tipoUsuario').value;
+        const nicknameGroup = document.getElementById('nicknameGroup');
+        const contraseniaGroup = document.getElementById('contraseniaGroup');
+        const nickname = document.getElementById('nickname');
+        const contrasenia = document.getElementById('contrasenia');
+        
+        if (tipoUsuario === 'vendedor') {
+            // Ocultar y limpiar campos, y quitar el atributo 'required'
+            nicknameGroup.style.display = 'none';
+            contraseniaGroup.style.display = 'none';
+            nickname.value = '';
+            contrasenia.value = '';
+            nickname.removeAttribute('required');
+            contrasenia.removeAttribute('required');
+        } else {
+            // Mostrar campos y agregar el atributo 'required'
+            nicknameGroup.style.display = 'block';
+            contraseniaGroup.style.display = 'block';
+            nickname.setAttribute('required', 'required');
+            contrasenia.setAttribute('required', 'required');
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         cargarUsuarios();
 
@@ -135,9 +162,9 @@
 
         if (nombreUsuario.length > 55) {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'El nombre no puede tener más de 55 caracteres',
-                icon: 'error',
+                icon: 'warning',
                 confirmButtonText: 'OK'
             });
             return;
@@ -145,9 +172,9 @@
 
         if (tipoUsuario === "") {
             Swal.fire({
-                title: 'Error',
+                title: 'Aviso',
                 text: 'Debe seleccionar un tipo de usuario',
-                icon: 'error',
+                icon: 'warning',
                 confirmButtonText: 'OK'
             });
             return;
@@ -184,9 +211,9 @@
                     });
                 } else {
                     Swal.fire({
-                        title: 'Error',
+                        title: 'Aviso',
                         text: res.message,
-                        icon: 'error',
+                        icon: 'warning',
                         confirmButtonText: 'OK'
                     });
                 }
@@ -196,9 +223,9 @@
             .catch(error => {
                 console.error('Error:', error);
                 Swal.fire({
-                    title: 'Error',
+                    title: 'Aviso',
                     text: 'Hubo un error al guardar el usuario',
-                    icon: 'error',
+                    icon: 'warning',
                     confirmButtonText: 'OK'
                 });
             });
@@ -217,6 +244,7 @@
                 document.getElementById('nickname').value = usuario.nickname;
                 document.getElementById('contrasenia').value = usuario.contrasenia;
                 document.getElementById('tipoUsuario').value = usuario.tipo;
+                toggleFieldsTypeUser();
                 document.getElementById('usuarioModalLabel').innerText = 'Editar Usuario';
                 $('#usuarioModal').modal('show');
             })
