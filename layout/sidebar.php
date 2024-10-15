@@ -17,7 +17,7 @@
                         <a href="moneda">Cálculo de inflación</a>
                     </li>
                     <li class="">
-                        <a href="presupuesto">Cálculo de presupuesto con inflación</a>
+                        <a href="presupuesto">Travel Tool Proyection</a>
                     </li>
                     <li class="">
                         <a href="no-brainer">No brainer</a>
@@ -30,7 +30,11 @@
                         <a href="pages/competencias-equipos">Competencias equipos
                         </a>
                     </li>
-
+                    <?php if (!isset($_SESSION['tipo'])): ?>
+                            <li class="">
+                                <a href="pages/login/">Inicar sesión</a>
+                            </li>
+                    <?php endif; ?>
                     <?php if (isset($_SESSION['tipo'])): ?>
                         <?php if ($_SESSION['tipo'] == 'admin'): ?>
                             <li class="">

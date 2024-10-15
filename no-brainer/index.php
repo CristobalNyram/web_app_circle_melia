@@ -1,4 +1,5 @@
 <?php
+session_start();
 include('../layout/header.php');
 include('../layout/nav.php');
 include('../layout/sidebar.php');

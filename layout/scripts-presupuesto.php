@@ -286,11 +286,11 @@ const countries = {
     const tableElement = document.getElementById('vacation-summary-table');
     tableElement.classList.add('animate__animated', 'animate__fadeIn'); // Animación
 
-    document.getElementById('vacation-result-total5').innerHTML = `$${cincoAnios.toFixed(2)} USD`;
-    document.getElementById('vacation-result-total10').innerHTML = `$${diezAnios.toFixed(2)} USD`;
-    document.getElementById('vacation-result-total15').innerHTML = `$${quinceAnios.toFixed(2)} USD`;
-    document.getElementById('vacation-result-total20').innerHTML = `$${veinteAnios.toFixed(2)} USD`;
-    document.getElementById('vacation-result-total30').innerHTML = `$${treintaAnios.toFixed(2)} USD`;
+    document.getElementById('vacation-result-total5').innerHTML = `$${cincoAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
+    document.getElementById('vacation-result-total10').innerHTML = `$${diezAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
+    document.getElementById('vacation-result-total15').innerHTML = `$${quinceAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
+    document.getElementById('vacation-result-total20').innerHTML = `$${veinteAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
+    document.getElementById('vacation-result-total30').innerHTML = `$${treintaAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
 
 
     // Generar la tabla de resumen
@@ -354,10 +354,12 @@ const countries = {
             const tableRow = `
                 <tr class="bg-white">
                     <td>${row.years}</td>
-                    <td>$${row.sinInflacion.toFixed(2)} USD</td>
-                    <td>$${row.total.toFixed(2)} USD</td>
-                    <td>$${row.minus20.toFixed(2)} USD</td>
-                    <td>$${row.minus40.toFixed(2)} USD</td>
+                    <td>$${row.sinInflacion.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</td>
+                    <td>$${row.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</td>
+
+                    <td>$${row.minus20.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</td>
+                    <td>$${row.minus40.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</td>
+
                 </tr>
             `;
             tableBody.innerHTML += tableRow;
