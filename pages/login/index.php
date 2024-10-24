@@ -11,14 +11,15 @@
 
 <div class="container text-center" style="margin-top: 50px;">
     <h1 class="mb-5">Selecciona tu tipo de cuenta</h1>
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-md-6">
-            <button type="button" class="btn btn-primary btn-lg btn-block" onclick="window.location.href='equipos'">Soy Vendedor</button>
+            <button type="button" class="btn btn-primary btn-lg btn-block mb-2" onclick="window.location.href='equipos'">Soy Vendedor</button>
         </div>
         <div class="col-md-6">
-            <button type="button" class="btn btn-secondary btn-lg btn-block" onclick="window.location.href='admin'">Soy Admin</button>
+            <button type="button" class="btn btn-secondary btn-lg btn-block mb-2" onclick="window.location.href='admin'">Soy Admin</button>
         </div>
     </div>
+    <button type="button" class="btn btn-light btn-lg" onclick="window.location.href='../../'">Regresar al inicio</button>
 </div>
 
 <!-- Bootstrap JS, Popper.js, and jQuery -->

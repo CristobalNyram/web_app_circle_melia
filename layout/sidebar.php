@@ -22,19 +22,22 @@
                     <li class="">
                         <a href="no-brainer">No brainer</a>
                     </li>
-                    <li class="">
+                    <li 
+                    hidden
+                    class="">
                         <a href="locations">Nuestra presencia en el mundo
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="semanas-hoteles-equivalencias">
+                        Matriz de Equivalencias
                         </a>
                     </li>
                     <li class="">
                         <a href="pages/competencias-equipos">Memberst Fest Ranking
                         </a>
                     </li>
-                    <?php if (!isset($_SESSION['tipo'])): ?>
-                            <li class="">
-                                <a href="pages/login/">Inicar sesión</a>
-                            </li>
-                    <?php endif; ?>
+
                     <?php if (isset($_SESSION['tipo'])): ?>
                         <?php if ($_SESSION['tipo'] == 'admin'): ?>
                             <li class="">
@@ -56,6 +59,8 @@
                         <?php endif; ?>
                     <?php endif; ?>
                 </ul>
+
+        
             </li>
         </ul>
     </div>
