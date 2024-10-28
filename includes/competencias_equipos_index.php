@@ -43,7 +43,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalDetalleVentasLabel">Detalle de Ventas del Vendedor</h5>
+                <h5 class="modal-title" id="modalDetalleVentasLabel">Detalle de Ventas del Vendedores</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -69,7 +69,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="downloadDetalleVentasVendedor">Descargar Detalle del Vendedor (Excel)</button> <!-- Botón para descargar el detalle del vendedor -->
+                <button type="button" class="btn btn-success" id="downloadDetalleVentasVendedor">Descargar Detalle de vendedores (Excel)</button> <!-- Botón para descargar el detalle del vendedor -->
             </div>
         </div>
     </div>
@@ -347,6 +347,7 @@
     }
 
     function verGraficaVentas(equipoId) {
+        ventasAgrupadas =[];
         if (ventasAgrupadas.length === 0) {
             // Si no hay ventas agrupadas, cargar los datos antes de generar la gráfica
             let api = "<?php echo BASE_URL_PROJECT . 'app/api/v1/ventas/?action=detalleVentas'; ?>";

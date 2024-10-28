@@ -1,0 +1,264 @@
+{
+  "INFINITE BLUE": [
+    { 
+      "investment": 15048, 
+      "weeksTotal": 6, 
+      "weeksPerYear": [1, 1, 2, 1, 1], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "100,000"
+    },
+    { 
+      "investment": 18330, 
+      "weeksTotal": 7, 
+      "weeksPerYear": [1, 2, 1, 2, 1], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "100,000"
+    },
+    { 
+      "investment": 21685, 
+      "weeksTotal": 8, 
+      "weeksPerYear": [2, 2, 2, 1, 1], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "100,000"
+    },
+    { 
+      "investment": 24573, 
+      "weeksTotal": 9, 
+      "weeksPerYear": [2, 2, 2, 2, 1], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "100,000"
+    },
+    { 
+      "investment": 27724, 
+      "weeksTotal": 10, 
+      "weeksPerYear": [2, 2, 2, 2, 2], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "100,000"
+    },
+    { 
+      "investment": 31365, 
+      "weeksTotal": 11, 
+      "weeksPerYear": [2, 2, 3, 2, 2], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "100,000"
+    },
+    { 
+      "investment": 34500, 
+      "weeksTotal": 12, 
+      "weeksPerYear": [2, 3, 2, 3, 2], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "100,000"
+    },
+    { 
+      "investment": 41210, 
+      "weeksTotal": 14, 
+      "weeksPerYear": [3, 3, 3, 3, 2], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "100,000"
+    }
+  ],
+  "INFINITE RED": [
+    { 
+      "investment": 45280, 
+      "weeksTotal": 15, 
+      "weeksPerYear": [3, 3, 3, 3, 3], 
+      "bonus": "INFINITE TRAVEL BENEFITS 3,000 CRÉDITOS", 
+      "exchange": "RCI WEEKS EXCHANGE 23/46", 
+      "points": "200,000"
+    },
+    { 
+      "investment": 54410, 
+      "weeksTotal": 17, 
+      "weeksPerYear": [3, 4, 3, 4, 3], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "200,000"
+    },
+    { 
+      "investment": 57600, 
+      "weeksTotal": 18, 
+      "weeksPerYear": [4, 4, 4, 4, 2], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "200,000"
+    },
+    { 
+      "investment": 64750, 
+      "weeksTotal": 20, 
+      "weeksPerYear": [4, 4, 4, 4, 4], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "200,000"
+    },
+    { 
+      "investment": 67940, 
+      "weeksTotal": 21, 
+      "weeksPerYear": [4, 4, 5, 4, 4], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "200,000"
+    },
+    { 
+      "investment": 75145, 
+      "weeksTotal": 23, 
+      "weeksPerYear": [5, 5, 5, 5, 3], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "200,000"
+    },
+    { 
+      "investment": 78170, 
+      "weeksTotal": 24, 
+      "weeksPerYear": [5, 5, 5, 5, 4], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "200,000"
+    }
+  ],
+  "INFINITE BLACK": [
+    { 
+      "investment": 88620, 
+      "weeksTotal": 26, 
+      "weeksPerYear": [5, 5, 6, 5, 5], 
+      "bonus": "INFINITE TRAVEL BENEFITS 4,000 CRÉDITOS", 
+      "exchange": "RCI WEEKS EXCHANGE 28/56", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 91810, 
+      "weeksTotal": 27, 
+      "weeksPerYear": [5, 6, 5, 6, 5], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 100610, 
+      "weeksTotal": 28, 
+      "weeksPerYear": [6, 6, 6, 6, 4], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 107100, 
+      "weeksTotal": 30, 
+      "weeksPerYear": [6, 6, 6, 6, 6], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 114910, 
+      "weeksTotal": 32, 
+      "weeksPerYear": [6, 7, 6, 7, 6], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 122720, 
+      "weeksTotal": 34, 
+      "weeksPerYear": [7, 7, 7, 7, 6], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 129100, 
+      "weeksTotal": 36, 
+      "weeksPerYear": [7, 7, 8, 7, 7], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 137020, 
+      "weeksTotal": 38, 
+      "weeksPerYear": [8, 8, 8, 8, 6], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 144940, 
+      "weeksTotal": 40, 
+      "weeksPerYear": [8, 8, 8, 8, 8], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 151100, 
+      "weeksTotal": 42, 
+      "weeksPerYear": [8, 9, 8, 9, 8], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 159130, 
+      "weeksTotal": 44, 
+      "weeksPerYear": [9, 9, 9, 9, 8], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 162100, 
+      "weeksTotal": 45, 
+      "weeksPerYear": [9, 9, 9, 9, 9], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 177240, 
+      "weeksTotal": 52, 
+      "weeksPerYear": [10, 10, 12, 10, 10], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 183620, 
+      "weeksTotal": 54, 
+      "weeksPerYear": [10, 12, 10, 12, 10], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 214200, 
+      "weeksTotal": 60, 
+      "weeksPerYear": [12, 12, 12, 12, 12], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 245440, 
+      "weeksTotal": 68, 
+      "weeksPerYear": [14, 14, 14, 14, 12], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    },
+    { 
+      "investment": 258200, 
+      "weeksTotal": 72, 
+      "weeksPerYear": [14, 14, 16, 14, 14], 
+      "bonus": "", 
+      "exchange": "", 
+      "points": "300,000"
+    }
+  ]
+}

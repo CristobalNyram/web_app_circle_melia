@@ -34,8 +34,13 @@
                         </a>
                     </li>
                     <li class="">
-                        <a href="pages/competencias-equipos">Memberst Fest Ranking
+                        <a href="membresias-alcance">
+                        Matriz de Equivalencias Membresias
                         </a>
+                    </li>
+                    <li class="">
+                        <a href="pages/competencias-equipos">Members Fest Ranking
+                                                    </a>
                     </li>
 
                     <?php if (isset($_SESSION['tipo'])): ?>

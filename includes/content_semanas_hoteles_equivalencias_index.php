@@ -30,10 +30,36 @@
                         </select>
                     </div>
 
-                    <!-- Botón para abrir el modal de temporadas -->
-                    <button type="button" class="btn btn-info mb-3" data-toggle="modal" data-target="#modalTemporadas">
-                        Ver Temporadas Disponibles
-                    </button>
+                    <!-- Botón para abrir el modal de temporadas y el dropdown -->
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-info w-100" data-toggle="modal" data-target="#modalTemporadas">
+                                Ver Temporadas Disponibles
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="dropdown w-100">
+                                <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownTemporadas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Ver Temporadas y Colores
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownTemporadas">
+                                    <h6 class="dropdown-header">Temporadas:</h6>
+                                    <div class="dropdown-item d-flex align-items-center">
+                                        <div class="color-box premium"></div> <span class="ml-2">Premium</span>
+                                    </div>
+                                    <div class="dropdown-item d-flex align-items-center">
+                                        <div class="color-box preferred"></div> <span class="ml-2">Preferred</span>
+                                    </div>
+                                    <div class="dropdown-item d-flex align-items-center">
+                                        <div class="color-box select"></div> <span class="ml-2">Select</span>
+                                    </div>
+                                    <div class="dropdown-item d-flex align-items-center">
+                                        <div class="color-box choice"></div> <span class="ml-2">Choice</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label for="fechasId">Seleccionar Fechas (7 noches por semana)</label>
@@ -97,7 +123,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="assets/js/app/data-equivalencias-hotel.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -123,17 +148,12 @@
                     const fechaInicio = new Date(rango.from);
                     const fechaFin = new Date(rango.to);
                     const fechaActual = new Date(dayElem.dateObj);
-                    
+
                     // Verificar si el día actual está dentro de alguno de los rangos de temporada
                     if (fechaActual >= fechaInicio && fechaActual <= fechaFin) {
-                        dayElem.classList.add('highlight-' + rango.tipo.toLowerCase()); // Añadimos una clase basada en la temporada
+                        // Aplicar clase de color basada en el tipo de temporada
+                        dayElem.classList.add('highlight-' + rango.tipo.toLowerCase()); // Añadimos la clase basada en la temporada
                         dayElem.setAttribute('title', `Temporada: ${rango.tipo}`); // Añadimos un tooltip con el tipo de temporada
-
-                        // Añadir etiqueta visual (badge) al día
-                        // const badge = document.createElement('span');
-                        // badge.classList.add('badge', 'badge-info');
-                        // badge.textContent = rango.tipo;
-                        // dayElem.appendChild(badge);
                     }
                 });
             },
@@ -141,12 +161,12 @@
                 if (selectedDates.length === 2) {
                     const diffDays = Math.floor((selectedDates[1] - selectedDates[0]) / (1000 * 60 * 60 * 24)) + 1;
 
-                    // Validar que sea múltiplo de 7 (una o más semanas completas)
-                    if (diffDays % 7 !== 0) {
+                    // Validar que sea múltiplo de 8 (una o más semanas de 8 días)
+                    if (diffDays % 8 !== 0) {
                         Swal.fire({
                             icon: 'warning',
                             title: 'Fechas inválidas',
-                            text: 'Debe seleccionar un rango de semanas completas (7 noches por semana).',
+                            text: 'Debe seleccionar un rango de semanas completas de 8 días.',
                         });
                         this.clear(); // Reiniciar el calendario si no es válido
                     } else {
@@ -251,7 +271,12 @@
 
     // Función para formatear las fechas en "día de la semana, día/mes/año"
     function formatearFecha(fecha) {
-        const opciones = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
+        const opciones = {
+            weekday: 'long',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        };
         return fecha.toLocaleDateString('es-ES', opciones);
     }
 
@@ -271,14 +296,40 @@
 
             if (!isNaN(noches)) {
                 const estadiasBase = semanas * (noches / 7); // Cálculo en base a semanas completas
-                document.getElementById("semanas-text").textContent = estadiasBase + " Estadías base";
+                const estadiasRedondeadas = Math.ceil(estadiasBase); // Redondeo hacia arriba
+
+                document.getElementById("semanas-text").textContent = estadiasRedondeadas + " Estadías base";
+
                 document.getElementById("semanas-container").style.display = "block";
             } else {
                 document.getElementById("semanas-text").textContent = "No se pudo calcular las estadías base.";
             }
 
-            document.getElementById("temporada-text").textContent = temporadaTipo;
+            // Mostrar la temporada
+            const temporadaBadge = document.getElementById("temporada-text");
+            temporadaBadge.textContent = temporadaTipo;
             document.getElementById("temporada-container").style.display = "block";
+
+            // Remover clases anteriores y añadir la clase correspondiente según la temporada
+            temporadaBadge.classList.remove('badge-premium', 'badge-select', 'badge-preferred', 'badge-choice'); // Remover clases anteriores
+
+            switch (temporadaTipo.toLowerCase()) {
+                case 'premium':
+                    temporadaBadge.classList.add('badge-premium');
+                    break;
+                case 'select':
+                    temporadaBadge.classList.add('badge-select');
+                    break;
+                case 'preferred':
+                    temporadaBadge.classList.add('badge-preferred');
+                    break;
+                case 'choice':
+                    temporadaBadge.classList.add('badge-choice');
+                    break;
+                default:
+                    temporadaBadge.classList.add('badge-secondary'); // Clase predeterminada si no hay coincidencias
+                    break;
+            }
         }
     }
 
@@ -309,29 +360,73 @@
 
 <!-- Estilos personalizados para resaltar las temporadas -->
 <style>
+    /* Colores personalizados según las temporadas */
     .highlight-premium {
-        background-color: gold;
-        color: black;
-    }
-    .highlight-select {
-        background-color: silver;
-        color: black;
-    }
-    .highlight-preferred {
-        background-color: #ff9800;
-        color: white;
-    }
-    .highlight-choice {
-        background-color: #4caf50;
+        background-color: #9C4428;
         color: white;
     }
 
-    /* Estilo para el badge dentro del calendario */
-    .badge-info {
-        font-size: 0.7em;
-        padding: 3px;
-        position: absolute;
-        top: 2px;
-        right: 2px;
+    .highlight-preferred {
+        background-color: #387A75;
+        color: white;
+    }
+
+    .highlight-select {
+        background-color: #47575C;
+        color: white;
+    }
+
+    .highlight-choice {
+        background-color: #74B8C1;
+        color: white;
+    }
+
+    .tira-colores {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .color-box {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        border-radius: 4px;
+    }
+
+    .premium {
+        background-color: #9C4428;
+    }
+
+    .preferred {
+        background-color: #387A75;
+    }
+
+    .select {
+        background-color: #47575C;
+    }
+
+    .choice {
+        background-color: #74B8C1;
+    }
+    /* Estilos personalizados para el badge de temporada */
+    .badge-premium {
+        background-color: #9C4428;
+        color: white;
+    }
+
+    .badge-preferred {
+        background-color: #387A75;
+        color: white;
+    }
+
+    .badge-select {
+        background-color: #47575C;
+        color: white;
+    }
+
+    .badge-choice {
+        background-color: #74B8C1;
+        color: white;
     }
 </style>
