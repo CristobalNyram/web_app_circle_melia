@@ -1,11 +1,3 @@
-<?php
-if (!isset($_SESSION['tipo']) || ($_SESSION['tipo'] !== 'admin' && $_SESSION['tipo'] !== 'invitado')) {
-    header('Location: ' . BASE_URL_PROJECT . 'pages/login/admin');
-    exit;
-}
-?>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     let sessionCheckInterval;
 

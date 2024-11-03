@@ -1,8 +1,14 @@
 <?php
 include '../../../database/db.php'; // Conexión a la base de datos
+$session_lifetime = 2400; // 40 minutos
+
+// Configurar la duración de la cookie y el tiempo de vida de la sesión
+ini_set('session.gc_maxlifetime', $session_lifetime);
+ini_set('session.cookie_lifetime', $session_lifetime);
 
 // Función para asociar usuarios a equipos
-function loginAdmin() {
+function loginAdmin()
+{
     global $pdo;
     $response = ['status' => false, 'message' => '', 'data' => []];
 
@@ -43,7 +49,7 @@ function loginAdmin() {
             throw new Exception("La contraseña es incorrecta.");
         }
 
-        $usuarioTypeValid=['invitado','admin'];
+        $usuarioTypeValid = ['invitado', 'admin'];
         if (isset($usuario['tipo']) && $usuario['tipo'] !== null && $usuario['tipo'] !== '' && !in_array($usuario['tipo'], $usuarioTypeValid)) {
             throw new Exception("Tipo de usuario incorrecto.");
         }
@@ -51,6 +57,7 @@ function loginAdmin() {
         // Si todo está correcto, iniciar la sesión y guardar los datos
         $_SESSION['nickname'] = $nickname;
         $_SESSION['tipo'] = $usuario['tipo'];
+        $_SESSION['last_activity'] = time(); // Inicializar la última actividad
 
         // Retornar éxito y datos del usuario
         $response['status'] = true;
@@ -60,7 +67,6 @@ function loginAdmin() {
             'nombreUsuario' => $usuario['nombreUsuario'],
             'tipo' => $usuario['tipo']
         ];
-
     } catch (Exception $e) {
         $response['message'] = 'Error: ' . $e->getMessage();
     }
@@ -68,7 +74,8 @@ function loginAdmin() {
     return $response;
 }
 
-function loginEquipo() {
+function loginEquipo()
+{
     global $pdo;
     $response = ['status' => false, 'message' => '', 'data' => []];
 
@@ -109,6 +116,7 @@ function loginEquipo() {
         $_SESSION['equipoId'] = $equipo['idEquipo'];
         $_SESSION['nombreEquipo'] = $equipo['nombreEquipo'];
         $_SESSION['tipo'] = 'equipo';  // Establecer el tipo como 'equipo'
+        $_SESSION['last_activity'] = time(); // Inicializar la última actividad
 
         // Retornar éxito
         $response['status'] = true;
@@ -117,7 +125,6 @@ function loginEquipo() {
             'idEquipo' => $equipo['idEquipo'],
             'nombreEquipo' => $equipo['nombreEquipo']
         ];
-
     } catch (Exception $e) {
         $response['message'] = 'Error: ' . $e->getMessage();
     }
@@ -125,4 +132,39 @@ function loginEquipo() {
     return $response;
 }
 
+function checkSessionStatus()
+{
+    session_start();
+    $response = ['status' => false, 'message' => '', 'time_remaining' => 0];
 
+    // Calcular el tiempo de inactividad y el tiempo restante de la sesión
+    if (isset($_SESSION['tipo']) && !empty($_SESSION['tipo']) && isset($_SESSION['last_activity'])) {
+        $time_elapsed = time() - $_SESSION['last_activity'];
+        $time_remaining = $GLOBALS['session_lifetime'] - $time_elapsed;
+
+        if ($time_remaining > 0) {
+            // Si la sesión sigue activa, actualizar 'last_activity' y devolver el tiempo restante
+           # $_SESSION['last_activity'] = time(); // Actualizar la última actividad
+            $response['status'] = true;
+            $response['message'] = 'La sesión sigue activa.';
+            $response['time_remaining'] = $time_remaining;
+            $minutes = floor($time_remaining / 60);
+            $seconds = $time_remaining % 60;
+            // Formatear el tiempo restante en un formato legible
+            $formatted_time_remaining = sprintf('%d minutos y %d segundos', $minutes, $seconds);
+            $response['formatted_time_remaining'] = $formatted_time_remaining;
+
+        } else {
+            // Si el tiempo ha expirado, destruir la sesión
+            $response['message'] = 'Su sesión ha expirado.';
+            session_unset();
+            session_destroy();
+        }
+    } else {
+        $response['message'] = 'No se encontró una sesión activa o el tipo de usuario no está definido.';
+        session_unset();
+        session_destroy();
+    }
+
+    return ($response);
+}

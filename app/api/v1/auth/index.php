@@ -19,10 +19,12 @@ try {
         case 'loginEquipo':
             $response = loginEquipo();
             break;
+        case 'checkSessionStatus':
+            $response = checkSessionStatus();
+            break;
         default:
             $response['message'] = 'Acción no válida';
     }
-
 } catch (Exception $e) {
     $response['message'] = 'Error general: ' . $e->getMessage();
 }

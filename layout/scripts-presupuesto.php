@@ -173,7 +173,7 @@
             data: {
                 labels: [],
                 datasets: [{
-                    label: `Presupuesto Ajustado ${currencyTexSelect}`,
+                    label: `Presupuesto Proyectado`,
                     data: [],
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -192,7 +192,7 @@
                     y: {
                         title: {
                             display: true,
-                            text: `Presupuesto Ajustado (${currencyTexSelect})`
+                            text: `Presupuesto Proyectado`
                         },
                         ticks: {
                             beginAtZero: false
