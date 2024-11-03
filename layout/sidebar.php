@@ -1,6 +1,7 @@
 <!-- Side Nav START -->
 <div class="side-nav">
     <div class="side-nav-inner">
+        <?php if (isset($_SESSION['tipo'])): ?>
         <ul class="side-nav-menu scrollable">
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="javascript:void(0);">
@@ -50,10 +51,6 @@
                     <?php endif; ?>
                 </ul>
             </li>
-
-
-
-
             <?php if (isset($_SESSION['tipo']) && $_SESSION['tipo'] == 'admin'): ?>
                 <li class="nav-item dropdown">
                     <a class="dropdown-toggle" href="javascript:void(0);">
@@ -84,7 +81,6 @@
                         </li>
                         <li
                         class="<?= basename($_SERVER['REQUEST_URI']) == 'usuarios' ? 'active' : '' ?>"
-
                         >
                             <a href="pages/usuarios/">Usuarios</a>
                         </li>
@@ -94,6 +90,9 @@
 
 
         </ul>
+
+        <?php endif; ?>
+
     </div>
 </div>
 <!-- Side Nav END -->

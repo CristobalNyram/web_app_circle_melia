@@ -58,6 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
 </head>
 
 <body>
-    <div class="app" 
+    <div class="app
+    <?php if (!isset($_SESSION['tipo'])): ?>
+    is-folded
+    <?php endif; ?>
+    " 
     >
         <div class="layout">
