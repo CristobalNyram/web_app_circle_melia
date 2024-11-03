@@ -95,6 +95,22 @@
         </div>
 
         <div class="card">
+            <div class="card-body text-center">
+                <h5>Selecciona la opción de equivalencias que deseas visualizar:</h5>
+                <label class="mr-3">
+                    <input type="radio" name="cardSelection" value="hotel" onclick="mostrarCardSeleccionado('hotel')" checked> Equivalencias por Hotel
+                </label>
+                <label class="mr-3">
+                    <input type="radio" name="cardSelection" value="semana" onclick="mostrarCardSeleccionado('semana')"> Equivalencias por Semana
+                </label>
+                <label>
+                    <input type="radio" name="cardSelection" value="membresia" onclick="mostrarCardSeleccionado('membresia')"> Equivalencias Semanas por Membresía
+                </label>
+            </div>
+        </div>
+
+
+        <div class="card" id="card-hotel">
             <div class="card-body">
                 <h4>
                     <i class="anticon anticon-home"></i>
@@ -171,7 +187,7 @@
                 </form>
             </div>
         </div>
-        <div class="card">
+        <div class="card" id="card-semana" style="display: none;">
             <div class="card-body">
                 <h4>
                     <i class="anticon anticon-home"></i>
@@ -195,7 +211,7 @@
                 </div>
             </div>
         </div>
-        <div class="card">
+        <div class="card" id="card-membresia" style="display: none;">
             <div class="card-body">
                 <h4>
                     <i class="anticon anticon-idcard"></i>
@@ -366,7 +382,24 @@
 <script src="assets/js/app/data-equivalencias-hotel.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-     //-------------------------------------------->INICIO
+    function mostrarCardSeleccionado(cardId) {
+        // Ocultar todas las tarjetas
+        document.getElementById("card-hotel").style.display = "none";
+        document.getElementById("card-semana").style.display = "none";
+        document.getElementById("card-membresia").style.display = "none";
+
+        // Mostrar solo la tarjeta seleccionada
+        if (cardId === "hotel") {
+            document.getElementById("card-hotel").style.display = "block";
+        } else if (cardId === "semana") {
+            document.getElementById("card-semana").style.display = "block";
+        } else if (cardId === "membresia") {
+            document.getElementById("card-membresia").style.display = "block";
+        }
+    }
+</script>
+<script>
+    //-------------------------------------------->INICIO
     // SCRIPTS PARA BUSCAR POR SEMANAS
     //-------------------------------------------->INICIO
     // Array para obtener el nombre del mes
