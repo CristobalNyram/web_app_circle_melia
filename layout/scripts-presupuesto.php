@@ -2,48 +2,49 @@
 <script src="assets/vendors/chartjs/Chart.min.js"></script>
 <script src="assets/js/app.min.js"></script>
 <script>
-
     // CONTRIES 
-// Variable global para almacenar el país seleccionado
-let selectedCountryName = "México"; // Valor por defecto
+    // Variable global para almacenar el país seleccionado
+    let selectedCountryName = "México"; // Valor por defecto
+    let currencySymbolSelect = '$';
+    let currencyTexSelect = 'USD';
 
-const countries = {
-    "México": {
-        flag: "https://flagcdn.com/w320/mx.png"
-    },
-    "Estados Unidos": {
-        flag: "https://flagcdn.com/w320/us.png"
-    },
-    "Canadá": {
-        flag: "https://flagcdn.com/w320/ca.png"
-    },
-    "España": {
-        flag: "https://flagcdn.com/w320/es.png"
-    },
-    "Chile": {
-        flag: "https://flagcdn.com/w320/cl.png"
-    },
-    "Reino Unido": {
-        flag: "https://flagcdn.com/w320/gb.png"
-    },
-    "Colombia": {
-        flag: "https://flagcdn.com/w320/co.png"
-    },
-    "Argentina": {
-        flag: "https://flagcdn.com/w320/ar.png"
-    },
-    "Brasil": {
-        flag: "https://flagcdn.com/w320/br.png"
-    },
-    "Portugal": {
-        flag: "https://flagcdn.com/w320/pt.png"
-    },
-    "República Dominicana": {
-        flag: "https://flagcdn.com/w320/do.png"
-    }
-};
+    const countries = {
+        "México": {
+            flag: "https://flagcdn.com/w320/mx.png"
+        },
+        "Estados Unidos": {
+            flag: "https://flagcdn.com/w320/us.png"
+        },
+        "Canadá": {
+            flag: "https://flagcdn.com/w320/ca.png"
+        },
+        "España": {
+            flag: "https://flagcdn.com/w320/es.png"
+        },
+        "Chile": {
+            flag: "https://flagcdn.com/w320/cl.png"
+        },
+        "Reino Unido": {
+            flag: "https://flagcdn.com/w320/gb.png"
+        },
+        "Colombia": {
+            flag: "https://flagcdn.com/w320/co.png"
+        },
+        "Argentina": {
+            flag: "https://flagcdn.com/w320/ar.png"
+        },
+        "Brasil": {
+            flag: "https://flagcdn.com/w320/br.png"
+        },
+        "Portugal": {
+            flag: "https://flagcdn.com/w320/pt.png"
+        },
+        "República Dominicana": {
+            flag: "https://flagcdn.com/w320/do.png"
+        }
+    };
 
-    window.onload = function () {
+    window.onload = function() {
         const selectElement = document.getElementById("vacation-country-select");
 
         // Crear una lista para simular el select
@@ -80,7 +81,7 @@ const countries = {
             li.appendChild(span);
 
             // Agregar evento de selección
-            li.addEventListener("click", function (event) {
+            li.addEventListener("click", function(event) {
                 event.stopPropagation();
                 // Actualizar el país y bandera seleccionados
                 selectElement.querySelector("span.selected-country").textContent = country;
@@ -113,12 +114,12 @@ const countries = {
         selectElement.appendChild(ul);
 
         // Evento para mostrar/ocultar la lista al hacer clic en el select
-        selectElement.addEventListener("click", function (event) {
+        selectElement.addEventListener("click", function(event) {
             ul.style.display = ul.style.display === "block" ? "none" : "block";
         });
 
         // Evento de búsqueda
-        searchInput.addEventListener("input", function () {
+        searchInput.addEventListener("input", function() {
             const filter = searchInput.value.toLowerCase();
             const liElements = ul.querySelectorAll("li:not(:first-child)"); // Excluir el input de búsqueda
             liElements.forEach(li => {
@@ -132,7 +133,7 @@ const countries = {
         });
 
         // Cerrar la lista cuando se hace clic fuera de ella
-        document.addEventListener("click", function (event) {
+        document.addEventListener("click", function(event) {
             if (!selectElement.contains(event.target)) {
                 ul.style.display = "none";
                 searchInput.value = ""; // Limpiar el campo de búsqueda al cerrar
@@ -140,12 +141,12 @@ const countries = {
         });
 
         // Impedir el cierre de la lista al hacer clic en el input de búsqueda
-        searchInput.addEventListener("click", function (event) {
+        searchInput.addEventListener("click", function(event) {
             event.stopPropagation(); // Evitar que el clic se propague
         });
     };
 
-        // CONTRIES
+    // CONTRIES
     const inflationData = {
         "México": [5.0, 4.8, 4.5, 4.3, 4.1, 4.0, 3.9, 3.8, 3.7, 3.6, 4.0, 4.1, 4.0, 4.2, 4.0, 4.1, 4.0, 4.1, 4.0, 4.2, 4.1, 4.0, 4.0, 4.1, 4.0, 4.2, 4.0, 4.1, 4.0, 4.0, 4.1, 4.0],
         "Estados Unidos": [3.2, 2.9, 2.7, 2.5, 2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 2.5, 2.6, 2.5, 2.7, 2.5, 2.6, 2.5, 2.7, 2.6, 2.5, 2.6, 2.5, 2.4, 2.5, 2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 1.8, 1.7],
@@ -165,13 +166,14 @@ const countries = {
     let vacationChart;
 
     function initializeChart() {
+
         const ctx = document.getElementById('vacation-chart').getContext('2d');
         vacationChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: [],
                 datasets: [{
-                    label: 'Presupuesto Ajustado (USD)',
+                    label: `Presupuesto Ajustado ${currencyTexSelect}`,
                     data: [],
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -190,7 +192,7 @@ const countries = {
                     y: {
                         title: {
                             display: true,
-                            text: 'Presupuesto Ajustado (USD)'
+                            text: `Presupuesto Ajustado (${currencyTexSelect})`
                         },
                         ticks: {
                             beginAtZero: false
@@ -204,102 +206,112 @@ const countries = {
     initializeChart();
 
     function calculateVacation() {
-    const budgetInput = document.getElementById('vacation-budget-input').value;
-    const yearInput = document.getElementById('vacation-year-input').value;
-    // Usar la variable global para el país seleccionado
-    const selectedCountry = selectedCountryName; // Tomando de la variable global
-    const budget = parseFloat(budgetInput);
-    const startYear = parseInt(yearInput);
+        let selectElementCurrency = document.getElementById('currency-select-input');
+        let selectedValueCurrency = selectElementCurrency.value;
+        let selectedTextCurrency = selectElementCurrency.options[selectElementCurrency.selectedIndex].text;
+         currencySymbolSelect=selectedTextCurrency+" ";
+        currencyTexSelect=selectedValueCurrency+" ";
 
-    // Validación de entrada
-    if (isNaN(budget) || isNaN(startYear) || startYear < 2024 || startYear > 2045) {
-        alert('Por favor ingrese un presupuesto válido y un año entre 2024 y 2045');
-        return;
+        const budgetInput = document.getElementById('vacation-budget-input').value;
+        const yearInput = document.getElementById('vacation-year-input').value;
+        // Usar la variable global para el país seleccionado
+        const selectedCountry = selectedCountryName; // Tomando de la variable global
+        const budget = parseFloat(budgetInput);
+        const startYear = parseInt(yearInput);
+
+        // Validación de entrada
+        if (isNaN(budget) || isNaN(startYear) || startYear < 2024 || startYear > 2045) {
+            alert('Por favor ingrese un presupuesto válido y un año entre 2024 y 2045');
+            return;
+        }
+
+        const inflationRates = inflationData[selectedCountry];
+
+        // Asegúrate de que inflationRates existe y tiene datos
+        if (!inflationRates) {
+            alert('No se encontraron datos de inflación para el país seleccionado.');
+            return;
+        }
+
+        let yearIndex = inflationData.years.indexOf(startYear);
+
+        // Comprobar si el año inicial es válido
+        if (yearIndex === -1) {
+            alert('Por favor ingrese un año válido de la lista de años disponibles.');
+            return;
+        }
+
+        let adjustedBudget = budget;
+        let totalSinInflacion = budget;
+
+        const adjustedValues = [];
+        document.getElementById('vacation-result').innerHTML = '';
+        document.getElementById('vacation-result-total5').innerHTML = '';
+
+        let cincoAnios = 0,
+            diezAnios = 0,
+            quinceAnios = 0,
+            veinteAnios = 0,
+            treintaAnios = 0;
+        // let budgetResults = `
+        // <table class="table table-bordered table-striped">
+        //     <tr class="bg-white">
+        //         <th>Año</th>
+        //         <th>Presupuesto Necesario (USD)</th>
+        //         <th>Inflación (%)</th>
+        //     </tr>`;
+
+        for (let i = yearIndex; i < inflationRates.length + yearIndex; i++) {
+            const inflationRate = inflationRates[i - yearIndex] / 100;
+            adjustedBudget *= (1 + inflationRate);
+            adjustedValues.push(adjustedBudget.toFixed(2));
+
+            // budgetResults += `
+            // <tr class="bg-white">
+            //     <td>${inflationData.years[i]}</td>
+            //     <td>$${adjustedBudget.toFixed(2)}</td>
+            //     <td>${(inflationRates[i - yearIndex]).toFixed(2)}%</td>
+            // </tr>`;
+
+            // Acumular totales para 5, 10, 15 y 20 años
+            if (i - yearIndex < 5) {
+                cincoAnios += adjustedBudget;
+            }
+            if (i - yearIndex < 10) {
+                diezAnios += adjustedBudget;
+            }
+            if (i - yearIndex < 15) {
+                quinceAnios += adjustedBudget;
+
+            }
+            if (i - yearIndex < 20) {
+                veinteAnios += adjustedBudget;
+            }
+            if (i - yearIndex < 30) {
+                treintaAnios += adjustedBudget;
+            }
+        }
+
+        // budgetResults += `</table>`;
+        // document.getElementById('vacation-result').innerHTML = budgetResults;
+
+        const tableElement = document.getElementById('vacation-summary-table');
+        tableElement.classList.add('animate__animated', 'animate__fadeIn'); // Animación
+
+        document.getElementById('vacation-result-total5').innerHTML = `${currencySymbolSelect}${cincoAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currencyTexSelect}`;
+        document.getElementById('vacation-result-total10').innerHTML = `${currencySymbolSelect}${diezAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currencyTexSelect}`;
+        document.getElementById('vacation-result-total15').innerHTML = `${currencySymbolSelect}${quinceAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currencyTexSelect}`;
+        document.getElementById('vacation-result-total20').innerHTML = `${currencySymbolSelect}${veinteAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currencyTexSelect}`;
+        document.getElementById('vacation-result-total30').innerHTML = `${currencySymbolSelect}${treintaAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currencyTexSelect}`;
+
+
+        // Generar la tabla de resumen
+        generateSummaryTable(totalSinInflacion, cincoAnios, diezAnios, quinceAnios, veinteAnios, treintaAnios, inflationRates);
+
+        // Actualizar gráfica
+        updateChart(inflationData.years.slice(yearIndex), adjustedValues);
+        displayInflationTable(inflationRates, selectedCountry);
     }
-
-    const inflationRates = inflationData[selectedCountry];
-
-    // Asegúrate de que inflationRates existe y tiene datos
-    if (!inflationRates) {
-        alert('No se encontraron datos de inflación para el país seleccionado.');
-        return;
-    }
-
-    let yearIndex = inflationData.years.indexOf(startYear);
-    
-    // Comprobar si el año inicial es válido
-    if (yearIndex === -1) {
-        alert('Por favor ingrese un año válido de la lista de años disponibles.');
-        return;
-    }
-
-    let adjustedBudget = budget;
-    let totalSinInflacion = budget;
-
-    const adjustedValues = [];
-    document.getElementById('vacation-result').innerHTML = '';
-    document.getElementById('vacation-result-total5').innerHTML = '';
-
-    let cincoAnios = 0, diezAnios = 0, quinceAnios = 0, veinteAnios = 0,treintaAnios = 0;
-    // let budgetResults = `
-    // <table class="table table-bordered table-striped">
-    //     <tr class="bg-white">
-    //         <th>Año</th>
-    //         <th>Presupuesto Necesario (USD)</th>
-    //         <th>Inflación (%)</th>
-    //     </tr>`;
-
-    for (let i = yearIndex; i < inflationRates.length + yearIndex; i++) {
-        const inflationRate = inflationRates[i - yearIndex] / 100;
-        adjustedBudget *= (1 + inflationRate);
-        adjustedValues.push(adjustedBudget.toFixed(2));
-
-        // budgetResults += `
-        // <tr class="bg-white">
-        //     <td>${inflationData.years[i]}</td>
-        //     <td>$${adjustedBudget.toFixed(2)}</td>
-        //     <td>${(inflationRates[i - yearIndex]).toFixed(2)}%</td>
-        // </tr>`;
-
-        // Acumular totales para 5, 10, 15 y 20 años
-        if (i - yearIndex < 5) {
-            cincoAnios += adjustedBudget;
-        }
-        if (i - yearIndex < 10) {
-            diezAnios += adjustedBudget;
-        }
-        if (i - yearIndex < 15) {
-            quinceAnios += adjustedBudget;
-        
-        }
-        if (i - yearIndex < 20) {
-            veinteAnios += adjustedBudget;
-        }
-        if (i - yearIndex < 30) {
-            treintaAnios += adjustedBudget;
-        }
-    }
-
-    // budgetResults += `</table>`;
-    // document.getElementById('vacation-result').innerHTML = budgetResults;
-
-    const tableElement = document.getElementById('vacation-summary-table');
-    tableElement.classList.add('animate__animated', 'animate__fadeIn'); // Animación
-
-    document.getElementById('vacation-result-total5').innerHTML = `$${cincoAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
-    document.getElementById('vacation-result-total10').innerHTML = `$${diezAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
-    document.getElementById('vacation-result-total15').innerHTML = `$${quinceAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
-    document.getElementById('vacation-result-total20').innerHTML = `$${veinteAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
-    document.getElementById('vacation-result-total30').innerHTML = `$${treintaAnios.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
-
-
-    // Generar la tabla de resumen
-    generateSummaryTable(totalSinInflacion, cincoAnios, diezAnios, quinceAnios, veinteAnios,treintaAnios, inflationRates);
-
-    // Actualizar gráfica
-    updateChart(inflationData.years.slice(yearIndex), adjustedValues);
-    displayInflationTable(inflationRates, selectedCountry);
-}
 
     function generateSummaryTable(sinInflacion, cincoAnios, diezAnios, quinceAnios, veinteAnios, treintaAnios, inflationRates) {
         const tableBody = document.getElementById('vacation-summary-table').querySelector('tbody');
@@ -312,8 +324,7 @@ const countries = {
         const veinteAcum = sinInflacion * 20;
         const treintaAcum = sinInflacion * 30;
 
-        const rows = [
-            {
+        const rows = [{
                 years: 5,
                 sinInflacion: cincoAcum,
                 total: cincoAnios,
@@ -328,7 +339,7 @@ const countries = {
                 minus40: diezAnios * 0.4
             },
             {
-                years: 15,  // Nueva fila para 15 años
+                years: 15, // Nueva fila para 15 años
                 sinInflacion: quinceAcum,
                 total: quinceAnios,
                 minus20: quinceAnios * 0.2,
@@ -354,11 +365,11 @@ const countries = {
             const tableRow = `
                 <tr class="bg-white">
                     <td>${row.years}</td>
-                    <td>$${row.sinInflacion.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</td>
-                    <td>$${row.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</td>
+                    <td>${currencySymbolSelect}${row.sinInflacion.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currencyTexSelect} </td>
+                    <td>${currencySymbolSelect}${row.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currencyTexSelect} </td>
 
-                    <td>$${row.minus20.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</td>
-                    <td>$${row.minus40.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</td>
+                    <td>${currencySymbolSelect}${row.minus20.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currencyTexSelect}</td>
+                    <td>${currencySymbolSelect}${row.minus40.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currencyTexSelect}</td>
 
                 </tr>
             `;
@@ -408,4 +419,5 @@ const countries = {
 </script>
 
 </body>
+
 </html>

@@ -16,7 +16,7 @@
     }
 
     .highlight-select {
-        background-color: #47575C;
+        background-color: black;
         color: white;
     }
 
@@ -39,7 +39,7 @@
     }
 
     .premium {
-        background-color: #9C4428;
+        background-color: #be5829;
     }
 
     .preferred {
@@ -47,7 +47,7 @@
     }
 
     .select {
-        background-color: #47575C;
+        background-color: black;
     }
 
     .choice {
@@ -56,7 +56,7 @@
 
     /* Estilos personalizados para el badge de temporada */
     .badge-premium {
-        background-color: #9C4428;
+        background-color: #be5829;
         color: white;
     }
 
@@ -342,7 +342,6 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="assets/js/app/data-equivalencias-hotel.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
     //-------------------------------------------->INICIO
     // SCRIPTS PARA TEMPORADAS MEMBRESIAS
@@ -649,7 +648,7 @@
 
             membership.weeksPerYear.forEach((weeks, index) => {
                 const li = document.createElement("li");
-                li.textContent = `Año ${index + 1}: ${weeks} semanas`;
+                li.textContent = `Año ${index + 1}: ${weeks} Semanas base`;
                 document.getElementById("yearlyDistribution").appendChild(li);
             });
 
@@ -680,7 +679,7 @@
                     document.getElementById("lowerDistribution").innerHTML = "";
                     lowerMembership.weeksPerYear.forEach((weeks, index) => {
                         const li = document.createElement("li");
-                        li.textContent = `Año ${index + 1}: ${weeks} semanas`;
+                        li.textContent = `Año ${index + 1}: ${weeks} Semanas base`;
                         document.getElementById("lowerDistribution").appendChild(li);
                     });
                     document.getElementById("collapseOne").style.display = "block";
@@ -692,7 +691,7 @@
                     document.getElementById("higherDistribution").innerHTML = "";
                     higherMembership.weeksPerYear.forEach((weeks, index) => {
                         const li = document.createElement("li");
-                        li.textContent = `Año ${index + 1}: ${weeks} semanas`;
+                        li.textContent = `Año ${index + 1}: ${weeks} Semanas base`;
                         document.getElementById("higherDistribution").appendChild(li);
                     });
                     document.getElementById("collapseTwo").style.display = "block";

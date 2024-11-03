@@ -16,7 +16,9 @@
                 <ul class="dropdown-menu">
                     <!-- Grupo de Herramientas Financieras -->
                     <li class="dropdown-header">Herramientas Financieras</li>
-                    <li class="<?= basename($_SERVER['REQUEST_URI']) == 'moneda' ? 'active' : '' ?>">
+                    <li
+                    hidden
+                    class="<?= basename($_SERVER['REQUEST_URI']) == 'moneda' ? 'active' : '' ?>">
                         <a href="moneda">Cálculo de inflación</a>
                     </li>
                     <li class="<?= basename($_SERVER['REQUEST_URI']) == 'travel-tool-projection' ? 'active' : '' ?>">
@@ -31,9 +33,9 @@
                     <li class="<?= basename($_SERVER['REQUEST_URI']) == 'semanas-hoteles-equivalencias' ? 'active' : '' ?>">
                         <a href="semanas-hoteles-equivalencias">Matriz de Equivalencias</a>
                     </li>
-                    <li class="<?= basename($_SERVER['REQUEST_URI']) == 'membresias-alcance' ? 'active' : '' ?>">
+                    <!-- <li class="<?= basename($_SERVER['REQUEST_URI']) == 'membresias-alcance' ? 'active' : '' ?>">
                         <a href="membresias-alcance">Matriz de Equivalencias Membresías</a>
-                    </li>
+                    </li> -->
 
                     <!-- Grupo de Eventos y Competencias -->
                     <li class="dropdown-header">Eventos y Competencias</li>
