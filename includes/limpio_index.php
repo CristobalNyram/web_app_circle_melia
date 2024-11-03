@@ -14,7 +14,7 @@
         <div class="card">
             <div class="card-body">
             <center>
-            <h4 class="">Bienvenido a travel Tool Projection</h4>
+            <h4 class="">Bienvenido a Travel Tool Projection</h4>
 
             </center>    
               

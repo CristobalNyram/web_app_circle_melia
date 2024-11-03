@@ -22,7 +22,7 @@
                         <a href="moneda">Cálculo de inflación</a>
                     </li>
                     <li class="<?= basename($_SERVER['REQUEST_URI']) == 'travel-tool-projection' ? 'active' : '' ?>">
-                        <a href="travel-tool-projection">Travel Tool Projection</a>
+                        <a href="travel-tool-projection">Prespuesto vacacional</a>
                     </li>
                     <li class="<?= basename($_SERVER['REQUEST_URI']) == 'no-brainer' ? 'active' : '' ?>">
                         <a href="no-brainer">No Brainer</a>

@@ -97,20 +97,22 @@
         <div class="card">
             <div class="card-body text-center">
                 <h5>Selecciona la opción de equivalencias que deseas visualizar:</h5>
+                <label>
+                    <input type="radio" name="cardSelection" value="membresia" onclick="mostrarCardSeleccionado('membresia')" checked> Equivalencias de Membresía
+                </label>
+
                 <label class="mr-3">
-                    <input type="radio" name="cardSelection" value="hotel" onclick="mostrarCardSeleccionado('hotel')" checked> Equivalencias por Hotel
+                    <input type="radio" name="cardSelection" value="hotel" onclick="mostrarCardSeleccionado('hotel')" > Equivalencias por Hoteles
                 </label>
                 <label class="mr-3">
                     <input type="radio" name="cardSelection" value="semana" onclick="mostrarCardSeleccionado('semana')"> Equivalencias por Semana
                 </label>
-                <label>
-                    <input type="radio" name="cardSelection" value="membresia" onclick="mostrarCardSeleccionado('membresia')"> Equivalencias Semanas por Membresía
-                </label>
+
             </div>
         </div>
 
 
-        <div class="card" id="card-hotel">
+        <div class="card" id="card-hotel" style="display: none;">
             <div class="card-body">
                 <h4>
                     <i class="anticon anticon-home"></i>
@@ -196,12 +198,20 @@
                 <form id="formulario-equivalencia-semana">
                     <!-- Campo de selección de rango de semanas -->
                     <div class="form-group">
-                        <label for="equivalenciaSemanasId">Seleccionar Semanas</label>
-                        <input type="number" class="form-control" id="equivalenciaSemanasId" placeholder="Ingrese el número de semanas" required>
+                        <div class="form-row align-items-end">
+                            <div class="col-md-6 col-lg-4 ">
+                                <label for="equivalenciaSemanasId">Seleccionar Semanas</label>
+                                <input type="number" class="form-control" id="equivalenciaSemanasId" placeholder="Ingrese el número de semanas" required>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <button type="button" class="btn btn-primary w-100" onclick="mostrarBusquedaConcidenciasPorSemanas()">Mostrar búsqueda</button>
+                            </div>
+                        </div>
                     </div>
 
+
+
                     <!-- Botón para ejecutar la búsqueda -->
-                    <button type="button" class="btn btn-primary" onclick="mostrarBusquedaConcidenciasPorSemanas()">Mostrar búsqueda</button>
                 </form>
 
                 <!-- Contenedor para mostrar los resultados en tarjeta -->
@@ -211,7 +221,7 @@
                 </div>
             </div>
         </div>
-        <div class="card" id="card-membresia" style="display: none;">
+        <div class="card" id="card-membresia" >
             <div class="card-body">
                 <h4>
                     <i class="anticon anticon-idcard"></i>

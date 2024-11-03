@@ -1,3 +1,9 @@
+<?php
+    header("Location: admin");
+    exit;
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>

@@ -124,14 +124,15 @@
                         </div>
                         <div class="m-t-20">
                             <div class="input-group mb-3">
-                                <input type="number" class="form-control" id="vacation-budget-input"
-                                    placeholder="Presupuesto de vacaciones en USD" aria-label="Presupuesto">
-                                <input type="number" class="form-control" id="vacation-year-input"
-                                    placeholder="Año inicial" step="0.0" aria-label="Año">
                                 <select class="form-control" id="currency-select-input">
                                     <option selected value="USD">&#36;</option>
                                     <option value="EUR">&#8364;</option>
                                 </select>
+                                <input type="number" class="form-control" id="vacation-budget-input"
+                                    placeholder="Presupuesto de vacaciones en USD" aria-label="Presupuesto">
+                                <input type="number" class="form-control" id="vacation-year-input"
+                                    placeholder="Año inicial" step="0.0" aria-label="Año">
+                       
 
                                 <div id="vacation-country-select" class="custom-select">
                                     <!-- Las opciones se cargarán dinámicamente -->

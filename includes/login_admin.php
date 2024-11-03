@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <?php
-    // Define a global variable ROOT_PATH if not already defined
     if (!defined('ROOT_PATH_ASSETS')) {
-        define('ROOT_PATH_ASSETS', '../'); // Default path if ROOT_PATH is not defined
+        define('ROOT_PATH_ASSETS', '../');
     }
     ?>
-
     <base href="<?php echo ROOT_PATH_ASSETS; ?>">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -47,17 +46,24 @@
                                         <div class="form-group">
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <button type="submit" class="btn btn-primary">Iniciar</button>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                                                    <label class="form-check-label text-primary" for="rememberMe">Recordar contraseña</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
                                     <div id="errorMessage" class="text-danger"></div>
+                                    <div class="text-center mt-4">
+                                        <button type="button" class="btn btn-secondary btn-block">Soy participante</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="d-none d-md-flex p-h-40 justify-content-between">
-                    <span class="">© 2024 Melia</span>
+                    <span>© 2024 Melia</span>
                 </div>
             </div>
         </div>
@@ -65,38 +71,60 @@
 
     <!-- Core Vendors JS -->
     <script src="assets/js/vendors.min.js"></script>
-
     <!-- Core JS -->
     <script src="assets/js/app.min.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved credentials if "Remember Me" was checked
+            const savedUsername = localStorage.getItem('username');
+            const savedPassword = localStorage.getItem('password');
+            if (savedUsername && savedPassword) {
+                document.getElementById('userName').value = savedUsername;
+                document.getElementById('password').value = savedPassword;
+                document.getElementById('rememberMe').checked = true;
+            }
+        });
+
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const baseURL = '<?php echo BASE_URL_PROJECT; ?>';
 
             const nickname = document.getElementById('userName').value;
             const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
             const errorMessage = document.getElementById('errorMessage');
+
+            // Save credentials if "Remember Me" is checked
+            if (rememberMe) {
+                localStorage.setItem('username', nickname);
+                localStorage.setItem('password', password);
+            } else {
+                localStorage.removeItem('username');
+                localStorage.removeItem('password');
+            }
 
             fetch('<?php echo BASE_URL_PROJECT; ?>app/api/v1/auth/?action=loginAdmin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nickname: nickname, contrasenia: password })
+                body: JSON.stringify({
+                    nickname: nickname,
+                    contrasenia: password
+                })
             })
             .then(response => response.json())
             .then(res => {
                 console.log(res);
                 if (res.status) {
-                   let typeUser= res.data.tipo ?? '';
-                   if(typeUser=='invitado'){
-                        window.location.href = baseURL ; // Redirect to dashboard or another page
-                   }else if(typeUser=='admin'){
-                    window.location.href = baseURL + 'pages/competencias-equipos/'; // Redirect to dashboard or another page
-                  }
+                    let typeUser = res.data.tipo ?? '';
+                    if (typeUser == 'invitado') {
+                        window.location.href = baseURL;
+                    } else if (typeUser == 'admin') {
+                        window.location.href = baseURL + 'pages/competencias-equipos/';
+                    }
                 } else {
-                    // Show error message
                     errorMessage.textContent = res.message;
                 }
             })
