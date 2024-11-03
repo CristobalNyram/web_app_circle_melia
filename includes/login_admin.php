@@ -92,7 +92,7 @@
                    let typeUser= res.data.tipo ?? '';
                    if(typeUser=='invitado'){
                         window.location.href = baseURL ; // Redirect to dashboard or another page
-                   }else if(typeUser=='invitado'){
+                   }else if(typeUser=='admin'){
                     window.location.href = baseURL + 'pages/competencias-equipos/'; // Redirect to dashboard or another page
                   }
                 } else {
