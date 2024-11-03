@@ -16,7 +16,7 @@
             <button type="button" class="btn btn-primary btn-lg btn-block mb-2" onclick="window.location.href='equipos'">Soy Vendedor</button>
         </div>
         <div class="col-md-6">
-            <button type="button" class="btn btn-secondary btn-lg btn-block mb-2" onclick="window.location.href='admin'">Soy Admin</button>
+            <button type="button" class="btn btn-secondary btn-lg btn-block mb-2" onclick="window.location.href='admin'">Soy Admin/Invitado</button>
         </div>
     </div>
     <button type="button" class="btn btn-light btn-lg" onclick="window.location.href='../../'">Regresar al inicio</button>

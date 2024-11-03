@@ -87,8 +87,14 @@
             })
             .then(response => response.json())
             .then(res => {
+                console.log(res);
                 if (res.status) {
-                window.location.href = baseURL + 'pages/competencias-equipos/'; // Redirect to dashboard or another page
+                   let typeUser= res.data.tipo ?? '';
+                   if(typeUser=='invitado'){
+                        window.location.href = baseURL ; // Redirect to dashboard or another page
+                   }else if(typeUser=='invitado'){
+                    window.location.href = baseURL + 'pages/competencias-equipos/'; // Redirect to dashboard or another page
+                  }
                 } else {
                     // Show error message
                     errorMessage.textContent = res.message;

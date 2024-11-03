@@ -43,6 +43,11 @@ function loginAdmin() {
             throw new Exception("La contraseña es incorrecta.");
         }
 
+        $usuarioTypeValid=['invitado','admin'];
+        if (isset($usuario['tipo']) && $usuario['tipo'] !== null && $usuario['tipo'] !== '' && !in_array($usuario['tipo'], $usuarioTypeValid)) {
+            throw new Exception("Tipo de usuario incorrecto.");
+        }
+
         // Si todo está correcto, iniciar la sesión y guardar los datos
         $_SESSION['nickname'] = $nickname;
         $_SESSION['tipo'] = $usuario['tipo'];
