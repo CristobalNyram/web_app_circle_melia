@@ -171,7 +171,30 @@
                 </form>
             </div>
         </div>
+        <div class="card">
+            <div class="card-body">
+                <h4>
+                    <i class="anticon anticon-home"></i>
+                    Equivalencias por Semana
+                </h4>
+                <form id="formulario-equivalencia-semana">
+                    <!-- Campo de selección de rango de semanas -->
+                    <div class="form-group">
+                        <label for="equivalenciaSemanasId">Seleccionar Semanas</label>
+                        <input type="number" class="form-control" id="equivalenciaSemanasId" placeholder="Ingrese el número de semanas" required>
+                    </div>
 
+                    <!-- Botón para ejecutar la búsqueda -->
+                    <button type="button" class="btn btn-primary" onclick="mostrarBusquedaConcidenciasPorSemanas()">Mostrar búsqueda</button>
+                </form>
+
+                <!-- Contenedor para mostrar los resultados en tarjeta -->
+                <div id="resultado-container-equivalencia-semana" class="mt-4" style="display: block;">
+
+
+                </div>
+            </div>
+        </div>
         <div class="card">
             <div class="card-body">
                 <h4>
@@ -342,6 +365,129 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="assets/js/app/data-equivalencias-hotel.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+     //-------------------------------------------->INICIO
+    // SCRIPTS PARA BUSCAR POR SEMANAS
+    //-------------------------------------------->INICIO
+    // Array para obtener el nombre del mes
+    const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+    // Función para convertir formato de fecha de yyyy-mm-dd a dd-mm-yyyy
+    function formatearFechaSemanas(fecha) {
+        const [year, month, day] = fecha.split("-");
+        return `${day}-${month}-${year}`;
+    }
+
+    function mostrarBusquedaConcidenciasPorSemanas() {
+        const semanas = parseInt(document.getElementById("equivalenciaSemanasId").value, 10);
+        const resultadosContainer = document.getElementById("resultado-container-equivalencia-semana");
+
+        resultadosContainer.innerHTML = ""; // Limpiar los resultados anteriores
+
+        if (!isNaN(semanas) && semanas > 0) {
+            data.hoteles.forEach(hotel => {
+                hotel.habitaciones.forEach(habitacion => {
+                    const temporadasCoincidentes = [];
+                    Object.keys(habitacion.semanas).forEach(tipoTemporada => {
+                        if (habitacion.semanas[tipoTemporada] === semanas) {
+                            const fechasTemporada = hotel.temporadas.map(temporada =>
+                                temporada.semanas
+                                .filter(semana => semana.tipo === tipoTemporada)
+                                .map(semana => ({
+                                    inicio: formatearFechaSemanas(semana.rango.inicio),
+                                    fin: formatearFechaSemanas(semana.rango.fin)
+                                }))
+                            ).flat();
+
+                            temporadasCoincidentes.push({
+                                tipo: tipoTemporada,
+                                fechas: fechasTemporada
+                            });
+                        }
+                    });
+
+                    // Si hay temporadas coincidentes, generar las tarjetas
+                    if (temporadasCoincidentes.length > 0) {
+                        const card = document.createElement("div");
+                        card.classList.add("card", "m-2", "border", "shadow-sm");
+                        card.style.borderColor = "#007bff"; // Añadir borde azul para resaltar
+                        card.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)"; // Añadir sombra
+                        card.style.marginBottom = "20px"; // Añadir espacio entre tarjetas
+
+                        const cardBody = document.createElement("div");
+                        cardBody.classList.add("card-body");
+
+                        const hotelName = document.createElement("h5");
+                        hotelName.classList.add("card-title");
+                        hotelName.textContent = `Hotel: ${hotel.nombre}`;
+                        hotelName.style.color = "#007bff"; // Añadir color para resaltar
+
+                        const roomType = document.createElement("p");
+                        roomType.classList.add("card-text");
+                        roomType.textContent = `Tipo de Habitación: ${habitacion.tipo}`;
+
+                        // Agregar temporadas y fechas en formato de lista, agrupadas por mes
+                        temporadasCoincidentes.forEach(temporada => {
+                            const temporadaInfo = document.createElement("div");
+                            temporadaInfo.classList.add("card-text", "mt-3");
+                            temporadaInfo.innerHTML = `<strong>Temporada:</strong> ${temporada.tipo}`;
+
+                            const fechasAgrupadas = {}; // Objeto para agrupar fechas por mes y año
+                            temporada.fechas.forEach(fecha => {
+                                const [day, month, year] = fecha.inicio.split("-");
+                                const mesAnio = `${nombresMeses[parseInt(month, 10) - 1]} ${year}`; // Obtener nombre del mes y año
+
+                                if (!fechasAgrupadas[mesAnio]) {
+                                    fechasAgrupadas[mesAnio] = [];
+                                }
+                                fechasAgrupadas[mesAnio].push(`${fecha.inicio} al ${fecha.fin}`);
+                            });
+
+                            const fechasList = document.createElement("ul");
+                            fechasList.style.paddingLeft = "20px";
+                            fechasList.style.listStyleType = "circle";
+
+                            // Recorrer cada mes y mostrar sus fechas
+                            Object.keys(fechasAgrupadas).forEach(mesAnio => {
+                                const mesHeader = document.createElement("li");
+                                mesHeader.innerHTML = `<strong>${mesAnio}</strong>`;
+                                fechasList.appendChild(mesHeader);
+
+                                const mesFechas = document.createElement("ul");
+                                mesFechas.style.paddingLeft = "20px";
+                                fechasAgrupadas[mesAnio].forEach(fecha => {
+                                    const fechaItem = document.createElement("li");
+                                    fechaItem.textContent = fecha;
+                                    mesFechas.appendChild(fechaItem);
+                                });
+                                fechasList.appendChild(mesFechas);
+                            });
+
+                            temporadaInfo.appendChild(fechasList);
+                            cardBody.appendChild(temporadaInfo);
+                        });
+
+                        cardBody.appendChild(hotelName);
+                        cardBody.appendChild(roomType);
+                        card.appendChild(cardBody);
+                        resultadosContainer.appendChild(card);
+                    }
+                });
+            });
+
+            if (resultadosContainer.innerHTML === "") {
+                resultadosContainer.innerHTML = "<p>No se encontraron coincidencias para el número de semanas especificado.</p>";
+            }
+        } else {
+            resultadosContainer.innerHTML = "<p>Por favor, ingrese un número válido de semanas.</p>";
+        }
+    }
+
+    //-------------------------------------------->FIN
+    // SCRIPTS PARA BUSCAR POR SEMANAS
+    //-------------------------------------------->FIN
+</script>
+
 <script>
     //-------------------------------------------->INICIO
     // SCRIPTS PARA TEMPORADAS MEMBRESIAS
