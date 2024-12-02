@@ -211,6 +211,30 @@
         let selectedTextCurrency = selectElementCurrency.options[selectElementCurrency.selectedIndex].text;
          currencySymbolSelect=selectedTextCurrency+" ";
         currencyTexSelect=selectedValueCurrency+" ";
+        console.log(currencySymbolSelect);
+        // <i class="icono-cash-convert anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
+
+        const cashIcons = document.querySelectorAll('.icono-cash-convert');
+        cashIcons.forEach(icon => {
+            const currentClass = icon.classList;
+            // console.log(currentClass);
+            if (selectedTextCurrency == '$') {
+                // Cambiar a icono de dólar
+                currentClass.remove('anticon-euro');
+                currentClass.add('anticon-dollar');
+                icon.style.color = 'green'; // Cambiar color si es necesario
+                //  console.log(currentClass);
+
+            } else if (selectedTextCurrency == '€') {
+                // console.log(currentClass);
+
+                // Cambiar a icono de euro
+                currentClass.remove('anticon-dollar');
+                currentClass.add('anticon-euro');
+                icon.style.color = 'blue'; // Cambiar color si es necesario
+            }
+        });
+
 
         const budgetInput = document.getElementById('vacation-budget-input').value;
         const yearInput = document.getElementById('vacation-year-input').value;

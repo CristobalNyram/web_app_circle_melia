@@ -157,8 +157,9 @@
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-body">
-                                        <i class="anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
-                                        <h5 class="card-title" id="vacation-result-total5"></h5>
+
+                                        <i class="icono-cash-convert anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
+                                        <h5 class="card-title mt-3" id="vacation-result-total5"></h5>
 
                                         <p class="card-text">Total por cinco años</p>
                                     </div>
@@ -167,8 +168,8 @@
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-body">
-                                        <i class="anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
-                                        <h5 class="card-title" id="vacation-result-total10"></h5>
+                                        <i class="icono-cash-convert anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
+                                        <h5 class="card-title mt-3" id="vacation-result-total10"></h5>
                                         <p class="card-text">Total por diez años</p>
                                     </div>
                                 </div>
@@ -176,8 +177,8 @@
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-body">
-                                        <i class="anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
-                                        <h5 class="card-title" id="vacation-result-total15"></h5>
+                                    <i class="icono-cash-convert anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
+                                    <h5 class="card-title mt-3" id="vacation-result-total15"></h5>
                                         <p class="card-text">Total por quince años</p>
                                     </div>
                                 </div>
@@ -185,8 +186,8 @@
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-body">
-                                        <i class="anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
-                                        <h5 class="card-title" id="vacation-result-total20"></h5>
+                                    <i class="icono-cash-convert anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
+                                    <h5 class="card-title mt-3" id="vacation-result-total20"></h5>
                                         <p class="card-text">Total por veinte años</p>
                                     </div>
                                 </div>
@@ -194,8 +195,8 @@
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-body">
-                                        <i class="anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
-                                        <h5 class="card-title" id="vacation-result-total30"></h5>
+                                    <i class="icono-cash-convert anticon anticon-dollar" style="font-size: 24px; color: green;"></i>
+                                    <h5 class="card-title mt-3" id="vacation-result-total30"></h5>
                                         <p class="card-text">Total por 30 años</p>
                                     </div>
                                 </div>

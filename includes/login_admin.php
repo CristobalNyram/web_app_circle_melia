@@ -54,9 +54,9 @@
                                         </div>
                                     </form>
                                     <div id="errorMessage" class="text-danger"></div>
-                                    <div class="text-center mt-4">
+                                    <!-- <div class="text-center mt-4">
                                         <button type="button" class="btn btn-secondary btn-block">Soy participante</button>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>

@@ -24,6 +24,13 @@
                     <li class="<?= basename($_SERVER['REQUEST_URI']) == 'travel-tool-projection' ? 'active' : '' ?>">
                         <a href="travel-tool-projection">Prespuesto vacacional</a>
                     </li>
+
+                    <?php if (isset($_SESSION['tipo']) && $_SESSION['tipo'] == 'admin'): ?>
+                    <li class="<?= basename($_SERVER['REQUEST_URI']) == 'vacation-tool-projection' ? 'active' : '' ?>">
+                        <a href="vacation-tool-projection">Vacation tool projection</a>
+                    </li>
+                    <?php endif; ?>
+
                     <li class="<?= basename($_SERVER['REQUEST_URI']) == 'no-brainer' ? 'active' : '' ?>">
                         <a href="no-brainer">No Brainer</a>
                     </li>
@@ -42,6 +49,7 @@
                     <li class="<?= basename($_SERVER['REQUEST_URI']) == 'competencias-equipos' ? 'active' : '' ?>">
                         <a href="pages/competencias-equipos">Members Fest Ranking</a>
                     </li>
+                  
 
                     <!-- Sección Condicional -->
                     <?php if (isset($_SESSION['tipo'])): ?>

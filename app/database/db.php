@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$db   = 'ventas_competencias';
+$db   = 'pruebaapiintegra_ventas_competencias';
 $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';

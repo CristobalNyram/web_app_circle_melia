@@ -69,6 +69,8 @@
                 </table>
             </div>
             <div class="modal-footer">
+                <button style="display: none;" type="button" class="btn btn-info" id="regresarListadoEquipoDetalleVentas">Regresar al listado</button> <!-- Botón para descargar el detalle del vendedor -->
+
                 <button type="button" class="btn btn-success" id="downloadDetalleVentasVendedor">Descargar Detalle de vendedores (Excel)</button> <!-- Botón para descargar el detalle del vendedor -->
             </div>
         </div>
@@ -169,6 +171,7 @@
 
     function mostrarMetaVentas(competencia) {
         const metaContainer = document.getElementById('meta-container');
+        
         metaContainer.innerHTML = `
             <div class="col-12">
                 <h3>${competencia.nombreCompetencia}</h3>
@@ -238,6 +241,9 @@
             equipoId: equipoId,
         });
 
+        document.getElementById('regresarListadoEquipoDetalleVentas').style.display = 'none';
+
+
         fetch(api, {
                 method: 'POST',
                 headers: {
@@ -250,7 +256,7 @@
                 if (res.status) {
                     // Actualizamos la variable global ventasAgrupadas
                     ventasAgrupadas = agruparVentasPorVendedor(res.data);
-                    mostrarVentasAgrupadas(ventasAgrupadas);
+                    mostrarVentasAgrupadas(ventasAgrupadas,equipoId);
                     $('#modalDetalleVentas').modal('show');
                 } else {
                     Swal.fire({
@@ -285,7 +291,7 @@
         return Object.values(ventasAgrupadas);
     }
 
-    function mostrarVentasAgrupadas(ventasAgrupadas) {
+    function mostrarVentasAgrupadas(ventasAgrupadas,equipoId) {
         const detalleBody = document.getElementById('detalleVentasBody');
         detalleBody.innerHTML = ''; 
 
@@ -294,15 +300,20 @@
                 <tr>
                     <td>${vendedor.nombreVendedor}</td>
                     <td>${Number(vendedor.totalMonto).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td><button class="btn btn-info" onclick="mostrarDetalleVentasVendedor('${vendedor.nombreVendedor}')">Ver Detalles</button></td>
+                    <td><button class="btn btn-info" onclick="mostrarDetalleVentasVendedor('${vendedor.nombreVendedor}','${equipoId}')">Ver Detalles</button></td>
                 </tr>`;
             detalleBody.insertAdjacentHTML('beforeend', row);
         });
     }
 
-    function mostrarDetalleVentasVendedor(nombreVendedor) {
+    function mostrarDetalleVentasVendedor(nombreVendedor,equipoId) {
         const detalleBody = document.getElementById('detalleVentasBody');
+        const regresarListadoEquipoDetalleVentas = document.getElementById('regresarListadoEquipoDetalleVentas');
+
         detalleBody.innerHTML = ''; 
+        regresarListadoEquipoDetalleVentas.style.display = 'block';
+        regresarListadoEquipoDetalleVentas.removeAttribute('onclick'); // Limpia cualquier onclick previo
+        regresarListadoEquipoDetalleVentas.setAttribute('onclick', `verDetalleVentas(${equipoId})`);
 
         let vendedor = ventasAgrupadas.find(v => v.nombreVendedor === nombreVendedor);
         let totalVentasActivas = 0;
@@ -344,6 +355,7 @@
         // Mostrar el total de ventas activas en el pie de la tabla
         document.getElementById('totalVentasActivas').textContent = `$${totalVentasActivas.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         $('#modalDetalleVentas').modal('show'); // Asegurar que se muestre el modal
+
     }
 
     function verGraficaVentas(equipoId) {

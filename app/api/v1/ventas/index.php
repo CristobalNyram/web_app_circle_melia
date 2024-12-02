@@ -32,7 +32,14 @@ try {
 
         case 'editarVenta':
             $response = editarVenta();
-
+            break;
+        case 'obtenerFraseRandom':
+            $response = obtenerFraseRandom();
+            break;
+        case 'calcularInflacionConDetalle':
+            $response = calcularInflacionConDetalle();
+            break;
+            
         default:
             $response['message'] = 'Acción no válida';
     }
