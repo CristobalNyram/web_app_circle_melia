@@ -835,6 +835,9 @@
             return null;
         }
     }
+
+    let valorSemanasOriginal =0;
+    let valorExperienciaOriginal = 0;
     function calcularResumenFinal() {
     // Obtener valores de los inputs brutos
     let montoOperadorRaw = document.getElementById("inflation-20-years").value;
@@ -855,24 +858,33 @@
 
     // Definir valores por categoría
     let valorPorSemana, semanaConExperiencia;
+    let aniosByMembresiaShow=0;
+    console.log(aniosByMembresiaShow);
+    console.log(categoria);
 
     switch (categoria.toUpperCase()) {
         case 'INFINITE RED':
             valorPorSemana = 3300;
+            aniosByMembresiaShow=10;
             semanaConExperiencia = 1750;
             break;
         case 'INFINITE BLACK':
             valorPorSemana = 1500;
+            aniosByMembresiaShow=7;
+
             semanaConExperiencia = 2750;
             break;
         case 'INFINITE BLUE':
             valorPorSemana = 3300;
+            aniosByMembresiaShow=5;
             semanaConExperiencia = 900;
             break;
         default:
             console.warn('Categoría no reconocida:', categoria);
             return;
     }
+    console.log(aniosByMembresiaShow);
+
 
     // Calcular total de semanas con experiencia
     const valorSemanasTotales = weeksTotal * (valorPorSemana + semanaConExperiencia);
@@ -881,8 +893,9 @@
     const arrayDeAumento = [4.5, 4.3, 4.2, 4.1, 4.0, 3.9, 3.8, 3.7, 3.6, 3.5, 4.0, 4.1, 4.0, 4.2, 4.1, 4.0, 4.3, 4.2, 4.1, 4.0, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.5, 4.4, 4.3, 4.2, 4.1, 4.0];
     let baseAumento = valorSemanasTotales;
     const resultadosAnios = [];
+    const aniosByMembresia=[5, 7, 10];
 
-    [5, 7, 10].forEach(anio => {
+    aniosByMembresia.forEach(anio => {
         let acumulado = baseAumento;
         for (let i = 0; i < anio; i++) {
             acumulado += (acumulado * arrayDeAumento[i] / 100);
@@ -894,7 +907,16 @@
        // Mostrar desgloses en el DOM
     document.getElementById("inputSemanasResultado").value = valorPorSemana.toFixed(2);
     document.getElementById("inputSemanaExperienciaResultado").value = semanaConExperiencia.toFixed(2);
+   
     
+    valorExperienciaOriginal = parseFloat(document.getElementById("inputSemanaExperienciaResultado").value);
+    document.getElementById("inputSemanaExperienciaResultadoSumaDeAmbos").value = (semanaConExperiencia+valorPorSemana).toFixed(2);
+    console.log("calculo 2");
+    document.getElementById("inputSemanaExperienciaResultadoSumaDeAmbosFinalResult").value =  (semanaConExperiencia+valorPorSemana).toFixed(2);
+    document.getElementById("inputMontoCalculoSemanaResultadoTotalProyeccionAniosProyectar").value =  aniosByMembresiaShow;
+
+    
+   
     // Calcular resultados finales
     const resultadoFinal = resultadosAnios[0]; // Tomando el de 5 años como ejemplo
     const totalFinal = parseFloat(resultadoFinal) + montoOperador;
@@ -904,6 +926,12 @@
 
     // Mostrar resultados en inputs
     document.getElementById("inputMontoCalculoSemanaResultado").value = resultadoFinal;
+ valorSemanasOriginal = parseFloat(document.getElementById("inputMontoCalculoSemanaResultado").value);
+    console.log(document.getElementById("inputMontoCalculoSemanaResultado").value);
+
+    document.getElementById("inputMontoCalculoSemanaResultadoTotalProyeccion").value = resultadoFinal;
+
+    
     document.getElementById("inputMontoTourOperadorResultado").value = totalFinal.toFixed(2);
     document.getElementById("inputValorMembresiaResultado").value = investment.toFixed(2);
     document.getElementById("inputValorOperarConMeliaResultado").value = montoMelia.toFixed(2);
@@ -916,6 +944,22 @@
     // Agregar eventos a los checkboxes
     document.getElementById('checkboxCalidad').addEventListener('change', manejarSeleccionPropuestaPresupuesto);
     document.getElementById('checkboxAhorro').addEventListener('change', manejarSeleccionPropuestaPresupuesto);
+
+
+    
+
+    function actualizarValoresSumaSemanasTotales() {
+        // Obtener el divisor seleccionado
+        const divisor = parseInt(document.getElementById("selectDivisor").value);
+        
+        // Calcular nuevos valores utilizando las variables originales
+        const nuevoValorSemanas = (valorSemanasOriginal / divisor).toFixed(2);
+        console.log(valorSemanasOriginal);
+        // Actualizar los inputs con los nuevos valores calculados
+        document.getElementById("inputMontoCalculoSemanaResultado").value = nuevoValorSemanas;
+
+        
+    }
 
     //paso 3 fin
 </script>

@@ -1,4 +1,85 @@
 <style>
+    /* Estilo principal del input con el ID específico */
+    #inputDiferenciaAhorro {
+        background-color: #f5f5f5;
+        /* Fondo suave */
+        border: 2px solid #ddd;
+        /* Borde inicial */
+        border-radius: 10px;
+        /* Bordes redondeados */
+        padding: 10px 15px;
+        /* Espaciado interno */
+        font-size: 1.5rem;
+        /* Tamaño grande del texto */
+        font-family: 'Arial', sans-serif;
+        /* Fuente */
+        color: #333;
+        /* Color del texto */
+        font-weight: bold;
+        /* Negrita */
+        text-align: center;
+        /* Centrar el texto */
+        outline: none;
+        /* Quitar borde al enfoque */
+        transition: all 0.3s ease-in-out;
+        /* Transiciones suaves */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* Sombra ligera */
+    }
+
+    /* Efecto al pasar el mouse */
+    #inputDiferenciaAhorro:hover {
+        background-color: #ffffff;
+        /* Cambiar fondo al pasar el mouse */
+        border-color: #007bff;
+        /* Cambiar borde */
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        /* Incrementar sombra */
+    }
+
+    /* Efecto al hacer clic o estar enfocado */
+    #inputDiferenciaAhorro:focus {
+        background-color: #e9f5ff;
+        /* Fondo sutil para foco */
+        border-color: #0056b3;
+        /* Borde más oscuro */
+        box-shadow: 0 4px 10px rgba(0, 86, 179, 0.3);
+        /* Sombra pronunciada */
+        color: #0056b3;
+        /* Cambiar color del texto */
+    }
+
+    /* Input readonly */
+    #inputDiferenciaAhorro[readonly] {
+        background-color: #f0f0f0;
+        /* Fondo diferente para readonly */
+        color: #555;
+        /* Texto ligeramente más oscuro */
+        cursor: not-allowed;
+        /* Indicar que no es editable */
+    }
+
+    /* Animación de palpitación */
+    @keyframes palpitar {
+
+        0%,
+        100% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    /* Aplicar la animación */
+    #inputDiferenciaAhorro {
+        animation: palpitar 3.5s infinite ease-in-out;
+        /* Latido continuo */
+    }
+
+    /* diferencia ahorro fin */
+
     .animate-title {
         animation: pulse 1s ease-in-out;
     }
@@ -727,15 +808,53 @@
                                     <h5 class="text-white">Desglose de Cálculos</h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="mb-3">
-                                        <label for="inputSemanasResultado" class="form-label">Valor de Semanas:</label>
-                                        <input type="text" readonly class="form-control" id="inputSemanasResultado">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="inputSemanasResultado" class="form-label">Valor de Semanas:</label>
+                                            <input type="text" readonly class="form-control" id="inputSemanasResultado">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <!-- <label for="inputSemanaExperienciaResultado" class="form-label">Semana con Experiencia:</label> -->
+                                            <label for="inputSemanaExperienciaResultado" class="form-label">Valor de Experiencia:</label>
+
+                                            <input type="text" readonly class="form-control" id="inputSemanaExperienciaResultado">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="inputSemanaExperienciaResultadoSumaDeAmbos" class="form-label">Suma de semanas:</label>
+                                            <input type="text" readonly class="form-control" id="inputSemanaExperienciaResultadoSumaDeAmbos">
+                                        </div>
+                                     
+
+
+
+
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="inputSemanaExperienciaResultado" class="form-label">Semana con Experiencia:</label>
-                                        <input type="text" readonly class="form-control" id="inputSemanaExperienciaResultado">
-                                    </div>
+                                    <br>
+                                       <div class="row ">
+                                            <!-- Columna 1: Suma de semanas -->
+                                            <div class="col-md-4">
+                                                <label for="inputSemanaExperienciaResultadoSumaDeAmbosFinalResult" class="form-label">Valor total de semanas:</label>
+                                                <input type="text" readonly class="form-control" id="inputSemanaExperienciaResultadoSumaDeAmbosFinalResult">
+                                            </div>
+
+                                            <!-- Columna 2: Total de proyección (con select a un lado del input) -->
+                                            <div class="col-md-4 ">
+                                                <label for="inputMontoCalculoSemanaResultadoTotalProyeccionAniosProyectar" class="form-label" style="flex: 1;">Años a proyectar:</label>
+                                                <input type="text" readonly class="form-control" id="inputMontoCalculoSemanaResultadoTotalProyeccionAniosProyectar" >
+                                               
+                                            </div>
+
+                                            <!-- Columna 3: Otro campo Total de proyección -->
+                                            <div class="col-md-4">
+                                                <label for="inputMontoCalculoSemanaResultadoTotalProyeccion" class="form-label">Total de proyeccion:</label>
+                                                <input type="text" readonly class="form-control" id="inputMontoCalculoSemanaResultadoTotalProyeccion">
+                                            </div>
+                                        </div>
                                 </div>
+
+
+
                             </div>
                         </div>
 
@@ -746,10 +865,39 @@
                                     <h5 class="text-white">Cálculo de Semanas</h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="mb-3">
-                                        <label for="inputMontoCalculoSemanaResultado" class="form-label">Cálculo de semanas:</label>
-                                        <input type="text" readonly class="form-control" id="inputMontoCalculoSemanaResultado">
-                                    </div>
+                                    
+        <!--  -->
+    <div class="row ">
+        <div class="col-md-6">
+            <label for="inputMontoCalculoSemanaResultado" class="form-label">Cálculo de semanas:</label>
+            <input type="text" readonly class="form-control" id="inputMontoCalculoSemanaResultado">
+        </div>
+        <div class="col-md-4">
+            <label for="selectDivisor" class="form-label">Dividir por:</label>
+            <br>
+            <select class="form-select" id="selectDivisor" onchange="actualizarValoresSumaSemanasTotales()">
+                <!-- Opciones del select -->
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+            </select>
+        </div>
+    </div>
+
+        <!--  -->
+
                                     <div class="mb-3">
                                         <label for="inputMontoTourOperadorResultado" class="form-label">Monto Tour Operador:</label>
                                         <input type="text" readonly class="form-control" id="inputMontoTourOperadorResultado">
@@ -793,7 +941,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <label for="inputDiferenciaAhorro" class="form-label">Diferencia y Ahorro:</label>
+                                        <!-- <label for="inputDiferenciaAhorro" class="form-label">Diferencia y Ahorro:</label> -->
                                         <input type="text" readonly class="form-control" id="inputDiferenciaAhorro">
                                     </div>
                                 </div>
