@@ -24,7 +24,7 @@ $is_logged_in = isset($_SESSION['tipo']); // Cambia 'user_id' por el identificad
                 <div class="d-flex justify-content-center mt-2">
                     <img 
                         class="logo-fold w-20" 
-                        src="https://puntacana-bavaro.com/wp-content/uploads/2017/01/CircleMelia.png" 
+                        src="https://dam.melia.com/melia/file/Zr2sBGB5za7pAa9Roymx.jpg?fp=300.0,268.5&width=600&height=537" 
                         alt="Logo">
                 </div>
                 <div class="d-flex justify-content-center mt-4">
